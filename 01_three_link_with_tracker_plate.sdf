@@ -652,8 +652,8 @@
           <limit>
             <lower>-30.0</lower> <!-- Limite de -30m -->
             <upper>30.0</upper>  <!-- Limite de +30m -->
-            <velocity>30.0</velocity>
-            <effort>1000</effort>
+            <velocity>1000.0</velocity> <!-- Sem limite prático -->
+            <effort>10000</effort>
           </limit>
           <dynamics>
             <damping>0.1</damping>
@@ -703,8 +703,8 @@
           <limit>
             <lower>-30.0</lower> <!-- Limite de -30m -->
             <upper>30.0</upper>  <!-- Limite de +30m -->
-            <velocity>30.0</velocity>
-            <effort>1000</effort>
+            <velocity>1000.0</velocity> <!-- Sem limite prático -->
+            <effort>10000</effort>
           </limit>
           <dynamics>
             <damping>0.1</damping>
@@ -754,8 +754,8 @@
           <limit>
             <lower>-30.0</lower> <!-- Limite de -30m -->
             <upper>30.0</upper>  <!-- Limite de +30m -->
-            <velocity>30.0</velocity>
-            <effort>1000</effort>
+            <velocity>1000.0</velocity> <!-- Sem limite prático -->
+            <effort>10000</effort>
           </limit>
           <dynamics>
             <damping>0.1</damping>
