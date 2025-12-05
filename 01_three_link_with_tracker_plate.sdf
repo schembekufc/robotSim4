@@ -635,6 +635,8 @@
             <specular>0.5 0.5 0.5 1</specular>
           </material>
         </visual>
+        
+        <!-- SEM COLISÃO -->
       </link>
 
       <!-- JUNTA PRISMÁTICA: link3 -> link_sphere_1 -->
@@ -648,10 +650,10 @@
         <axis>
           <xyz>1 0 0</xyz> <!-- Movimento em X -->
           <limit>
-            <lower>-2.0</lower> <!-- Limite de -2m -->
-            <upper>2.0</upper>  <!-- Limite de +2m -->
-            <velocity>1.0</velocity>
-            <effort>100</effort>
+            <lower>-30.0</lower> <!-- Limite de -30m -->
+            <upper>30.0</upper>  <!-- Limite de +30m -->
+            <velocity>30.0</velocity>
+            <effort>1000</effort>
           </limit>
           <dynamics>
             <damping>0.1</damping>
@@ -687,6 +689,8 @@
             <specular>0.5 0.5 0.5 1</specular>
           </material>
         </visual>
+        
+        <!-- SEM COLISÃO -->
       </link>
 
       <!-- Junta prismática: movimento em Y -->
@@ -697,10 +701,10 @@
         <axis>
           <xyz>0 1 0</xyz> <!-- Movimento em Y -->
           <limit>
-            <lower>-2.0</lower> <!-- Limite de -2m -->
-            <upper>2.0</upper>  <!-- Limite de +2m -->
-            <velocity>1.0</velocity>
-            <effort>100</effort>
+            <lower>-30.0</lower> <!-- Limite de -30m -->
+            <upper>30.0</upper>  <!-- Limite de +30m -->
+            <velocity>30.0</velocity>
+            <effort>1000</effort>
           </limit>
           <dynamics>
             <damping>0.1</damping>
@@ -736,6 +740,8 @@
             <specular>0.5 0.5 0.5 1</specular>
           </material>
         </visual>
+        
+        <!-- SEM COLISÃO -->
       </link>
 
       <!-- Junta prismática: movimento em Z -->
@@ -746,10 +752,10 @@
         <axis>
           <xyz>0 0 1</xyz> <!-- Movimento em Z -->
           <limit>
-            <lower>-2.0</lower> <!-- Limite de -2m -->
-            <upper>2.0</upper>  <!-- Limite de +2m -->
-            <velocity>1.0</velocity>
-            <effort>100</effort>
+            <lower>-30.0</lower> <!-- Limite de -30m -->
+            <upper>30.0</upper>  <!-- Limite de +30m -->
+            <velocity>30.0</velocity>
+            <effort>1000</effort>
           </limit>
           <dynamics>
             <damping>0.1</damping>
