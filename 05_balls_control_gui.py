@@ -46,9 +46,9 @@ class OscillatoryControlGUI(QWidget):
         self.freq_sphere2 = 1.0  # Hz
         self.freq_sphere3 = 1.0  # Hz
         
-        self.amplitude_sphere1 = 5.0  # metros (deslocamento máximo)
-        self.amplitude_sphere2 = 5.0  # metros
-        self.amplitude_sphere3 = 5.0  # metros
+        self.amplitude_sphere1 = 0.5  # metros (deslocamento máximo)
+        self.amplitude_sphere2 = 0.5  # metros
+        self.amplitude_sphere3 = 0.5  # metros
         
         self.enabled_sphere1 = False
         self.enabled_sphere2 = False
@@ -98,16 +98,16 @@ class OscillatoryControlGUI(QWidget):
         # Amplitude (deslocamento máximo)
         lbl_amp1 = QLabel("Amplitude (metros):")
         self.slider_amp1 = QSlider(Qt.Horizontal)
-        self.slider_amp1.setMinimum(1)     # 0.1 m
-        self.slider_amp1.setMaximum(300)   # 30.0 m
-        self.slider_amp1.setValue(50)      # 5.0 m
+        self.slider_amp1.setMinimum(0)     # 0.0 m
+        self.slider_amp1.setMaximum(100)   # 1.0 m
+        self.slider_amp1.setValue(50)      # 0.5 m
         self.slider_amp1.valueChanged.connect(self.on_amp1_changed)
         
         self.spin_amp1 = QDoubleSpinBox()
-        self.spin_amp1.setRange(0.1, 30.0)
-        self.spin_amp1.setDecimals(1)
-        self.spin_amp1.setSingleStep(0.5)
-        self.spin_amp1.setValue(5.0)
+        self.spin_amp1.setRange(0.0, 1.0)
+        self.spin_amp1.setDecimals(2)
+        self.spin_amp1.setSingleStep(0.01)
+        self.spin_amp1.setValue(0.5)
         self.spin_amp1.valueChanged.connect(self.on_spin_amp1_changed)
         
         grid_sphere1.addWidget(lbl_amp1, 2, 0)
@@ -150,16 +150,16 @@ class OscillatoryControlGUI(QWidget):
         
         lbl_amp2 = QLabel("Amplitude (metros):")
         self.slider_amp2 = QSlider(Qt.Horizontal)
-        self.slider_amp2.setMinimum(1)     # 0.1 m
-        self.slider_amp2.setMaximum(300)   # 30.0 m
-        self.slider_amp2.setValue(50)      # 5.0 m
+        self.slider_amp2.setMinimum(0)     # 0.0 m
+        self.slider_amp2.setMaximum(100)   # 1.0 m
+        self.slider_amp2.setValue(50)      # 0.5 m
         self.slider_amp2.valueChanged.connect(self.on_amp2_changed)
         
         self.spin_amp2 = QDoubleSpinBox()
-        self.spin_amp2.setRange(0.1, 30.0)
-        self.spin_amp2.setDecimals(1)
-        self.spin_amp2.setSingleStep(0.5)
-        self.spin_amp2.setValue(5.0)
+        self.spin_amp2.setRange(0.0, 1.0)
+        self.spin_amp2.setDecimals(2)
+        self.spin_amp2.setSingleStep(0.01)
+        self.spin_amp2.setValue(0.5)
         self.spin_amp2.valueChanged.connect(self.on_spin_amp2_changed)
         
         grid_sphere2.addWidget(lbl_amp2, 2, 0)
@@ -201,16 +201,16 @@ class OscillatoryControlGUI(QWidget):
         
         lbl_amp3 = QLabel("Amplitude (metros):")
         self.slider_amp3 = QSlider(Qt.Horizontal)
-        self.slider_amp3.setMinimum(1)     # 0.1 m
-        self.slider_amp3.setMaximum(300)   # 30.0 m
-        self.slider_amp3.setValue(50)      # 5.0 m
+        self.slider_amp3.setMinimum(0)     # 0.0 m
+        self.slider_amp3.setMaximum(100)   # 1.0 m
+        self.slider_amp3.setValue(50)      # 0.5 m
         self.slider_amp3.valueChanged.connect(self.on_amp3_changed)
         
         self.spin_amp3 = QDoubleSpinBox()
-        self.spin_amp3.setRange(0.1, 30.0)
-        self.spin_amp3.setDecimals(1)
-        self.spin_amp3.setSingleStep(0.5)
-        self.spin_amp3.setValue(5.0)
+        self.spin_amp3.setRange(0.0, 1.0)
+        self.spin_amp3.setDecimals(2)
+        self.spin_amp3.setSingleStep(0.01)
+        self.spin_amp3.setValue(0.5)
         self.spin_amp3.valueChanged.connect(self.on_spin_amp3_changed)
         
         grid_sphere3.addWidget(lbl_amp3, 2, 0)
@@ -284,7 +284,7 @@ class OscillatoryControlGUI(QWidget):
             self.lbl_status1.setText(f"Status: Oscilando ({value:.2f} Hz)")
     
     def on_amp1_changed(self, value):
-        amp = value / 10.0  # Slider 1-300 -> 0.1-30.0
+        amp = value / 100.0  # Slider 0-100 -> 0.0-1.0
         self.amplitude_sphere1 = amp
         self.spin_amp1.blockSignals(True)
         self.spin_amp1.setValue(amp)
@@ -293,7 +293,7 @@ class OscillatoryControlGUI(QWidget):
     def on_spin_amp1_changed(self, value):
         self.amplitude_sphere1 = value
         self.slider_amp1.blockSignals(True)
-        self.slider_amp1.setValue(int(value * 10))  # 0.1-30.0 -> 1-300
+        self.slider_amp1.setValue(int(value * 100))  # 0.0-1.0 -> 0-100
         self.slider_amp1.blockSignals(False)
 
     # ===== CALLBACKS ESFERA 2 =====
@@ -325,7 +325,7 @@ class OscillatoryControlGUI(QWidget):
             self.lbl_status2.setText(f"Status: Oscilando ({value:.2f} Hz)")
     
     def on_amp2_changed(self, value):
-        amp = value / 10.0  # Slider 1-300 -> 0.1-30.0
+        amp = value / 100.0  # Slider 0-100 -> 0.0-1.0
         self.amplitude_sphere2 = amp
         self.spin_amp2.blockSignals(True)
         self.spin_amp2.setValue(amp)
@@ -334,7 +334,7 @@ class OscillatoryControlGUI(QWidget):
     def on_spin_amp2_changed(self, value):
         self.amplitude_sphere2 = value
         self.slider_amp2.blockSignals(True)
-        self.slider_amp2.setValue(int(value * 10))  # 0.1-30.0 -> 1-300
+        self.slider_amp2.setValue(int(value * 100))  # 0.0-1.0 -> 0-100
         self.slider_amp2.blockSignals(False)
 
     # ===== CALLBACKS ESFERA 3 =====
@@ -366,7 +366,7 @@ class OscillatoryControlGUI(QWidget):
             self.lbl_status3.setText(f"Status: Oscilando ({value:.2f} Hz)")
     
     def on_amp3_changed(self, value):
-        amp = value / 10.0  # Slider 1-300 -> 0.1-30.0
+        amp = value / 100.0  # Slider 0-100 -> 0.0-1.0
         self.amplitude_sphere3 = amp
         self.spin_amp3.blockSignals(True)
         self.spin_amp3.setValue(amp)
@@ -375,7 +375,7 @@ class OscillatoryControlGUI(QWidget):
     def on_spin_amp3_changed(self, value):
         self.amplitude_sphere3 = value
         self.slider_amp3.blockSignals(True)
-        self.slider_amp3.setValue(int(value * 10))  # 0.1-30.0 -> 1-300
+        self.slider_amp3.setValue(int(value * 100))  # 0.0-1.0 -> 0-100
         self.slider_amp3.blockSignals(False)
 
     # ===== FUNÇÕES AUXILIARES =====
