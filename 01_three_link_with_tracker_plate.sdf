@@ -1,0 +1,861 @@
+<?xml version="1.0"?>
+<sdf version="1.10">
+  <world name="three_link_with_tracker_plate_world">
+
+    <!-- Luz solar principal (direcional) -->
+    <light name="sun" type="directional">
+      <pose>0 0 100 0 0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>10.0</intensity>
+      <direction>0 0 -1</direction>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>0.8 0.8 0.8 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+    </light>
+
+    <scene>
+      <ambient>0.5 0.5 0.5 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Física -->
+    <physics name="physics_engine" type="bullet">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+    <!-- PLUGINS GAZEBO -->
+    <plugin name="gz::sim::systems::Physics" filename="gz-sim-physics-system"/>
+    <plugin name="gz::sim::systems::UserCommands" filename="gz-sim-user-commands-system"/>
+    <plugin name="gz::sim::systems::SceneBroadcaster" filename="gz-sim-scene-broadcaster-system"/>
+    <plugin name="gz::sim::systems::Sensors" filename="gz-sim-sensors-system">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin name="gz::sim::systems::ForceTorque" filename="gz-sim-forcetorque-system"/>
+
+    <!-- Chão -->
+    <model name="chao">
+      <static>true</static>
+      <link name="chao_link">
+        <collision name="chao_collision">
+          <geometry>
+            <plane>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="chao_visual">
+          <geometry>
+            <plane>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.4 0.4 0.4 1</ambient>
+            <diffuse>0.4 0.4 0.4 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- MODELO DO ROBÔ COM 3 LINKS + LINK DA PLACA -->
+    <model name="three_link_model">
+      <pose>0 0 0 0 0 0</pose>
+      <static>false</static>
+
+      <!-- LINK 1 -->
+      <link name="link1">
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <mass>2.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><iyy>0.01</iyy><izz>0.01</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="link1_collision">
+          <geometry>
+            <box><size>0.2 0.2 0.2</size></box>
+          </geometry>
+        </collision>
+        <visual name="link1_visual">
+          <geometry>
+            <mesh>
+              <uri>file:///home/lhmt-jhoni/testes/formas/catia/1_Base.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <!-- LINK 2 -->
+      <link name="link2">
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <mass>20</mass>
+          <inertia>
+            <ixx>5</ixx><iyy>5</iyy><izz>2</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="link2_collision">
+          <pose>0 0 1.283 0 0 0</pose>
+          <geometry>
+            <box><size>0.4 0.4 1.0</size></box>
+          </geometry>
+        </collision>
+        <visual name="link2_visual">
+          <pose>0 0 1.283 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///home/lhmt-jhoni/testes/formas/catia/2_Torre.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <!-- LINK 3 (só o braço H) -->
+      <link name="link3">
+        <pose>0 0 0 0 0 0</pose>
+        <inertial>
+          <mass>25</mass>
+          <inertia>
+            <ixx>8</ixx><iyy>8</iyy><izz>3.2</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <collision name="link3_collision">
+          <pose>-0.07 -0.1725 2.0384 0 0 0</pose>
+          <geometry>
+            <box><size>0.5 0.3 0.8</size></box>
+          </geometry>
+        </collision>
+        <visual name="link3_visual">
+          <pose>-0.07 -0.1725 2.0384 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///home/lhmt-jhoni/testes/formas/catia/3_BracoH.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- ========================================== -->
+        <!-- ASTE DE FIXAÇÃO DA PLACA RASTREADORA       -->
+        <!-- ========================================== -->
+        <!-- Barra cilíndrica vertical conectando o link3 à placa -->
+        <visual name="tracker_support_rod_visual">
+          <!-- Posição central da barra: meio entre 2.105 e 2.405 = 2.255 -->
+          <pose>-0.072 0.5 2.255 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.015</radius> <!-- 1.5 cm de raio (3 cm de diâmetro) -->
+              <length>0.3</length>   <!-- 30 cm de comprimento -->
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.3 0.3 0.3 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+        
+        <!-- Colisão da aste -->
+        <collision name="tracker_support_rod_collision">
+          <pose>-0.072 0.5 2.255 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.015</radius>
+              <length>0.3</length>
+            </cylinder>
+          </geometry>
+        </collision>
+
+      </link>
+
+      <!-- ========================================== -->
+      <!-- LINK DO PRATO PARABÓLICO (Espelho)         -->
+      <!-- ========================================== -->
+      <link name="link_parabolic_dish">
+        <!-- Pose inicial do link (será ajustada pela joint) -->
+        <pose>-0.07 2.143 2.043 0 0 0</pose>
+        
+        <!-- Propriedades físicas: Resina e Fibra de Vidro -->
+        <!-- Densidade: 1900 kg/m³ -->
+        <!-- Massa calculada: 145.50 kg -->
+        <inertial>
+          <mass>145.50</mass>
+          <inertia>
+            <ixx>83.0250</ixx>
+            <iyy>83.0250</iyy>
+            <izz>163.6819</izz>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyz>0</iyz>
+          </inertia>
+        </inertial>
+        
+        <!-- Visual do prato -->
+        <visual name="parabolic_dish_visual">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///home/lhmt-jhoni/Gazebo/robotSim2/formas/parabolic_dish.stl</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.95 1</ambient>
+            <diffuse>0.9 0.9 0.95 1</diffuse>
+            <specular>1.0 1.0 1.0 1</specular>
+            <emissive>0 0 0 1</emissive>
+            <pbr>
+              <metal>
+                <metalness>0.95</metalness>
+                <roughness>0.05</roughness>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+        
+        <!-- Colisão do prato -->
+        <collision name="parabolic_dish_collision">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <mesh>
+              <uri>file:///home/lhmt-jhoni/Gazebo/robotSim2/formas/parabolic_dish.stl</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+        </collision>
+
+        <!-- VISUAL: Haste de suporte do sensor (Feed Support) -->
+        <visual name="feed_support_rod_visual">
+          <pose>0 0 0.9 0 0 0</pose> <!-- Centro da haste em Z=0.9 (metade de 1.8) -->
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>1.8</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.2 1</ambient>
+            <diffuse>0.2 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- VISUAL: Caixa do Sensor (Sensor Housing) -->
+        <visual name="feed_sensor_housing_visual">
+          <pose>0 0 1.8 0 0 0</pose> <!-- No foco -->
+          <geometry>
+            <cylinder>
+              <radius>0.1</radius>
+              <length>0.1</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- FILTRO ESCURO (Lente de óculos de sol) -->
+        <visual name="camera_filter_visual">
+          <pose>0 0 1.75 0 0 0</pose> <!-- 5cm abaixo da câmera -->
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file:///home/lhmt-jhoni/Gazebo/robotSim3/lens_mask.obj</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>0 0 0 1</specular>
+          </material>
+        </visual>
+
+        <!-- LENTE CENTRAL (Vidro ajustável) -->
+        <visual name="camera_lens_center_visual">
+          <pose>0 0 1.75 0 0 0</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius> <!-- Raio de 2cm (Diâmetro 4cm) -->
+              <length>0.002</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0 0 0 0.95</ambient> <!-- Ajuste o último valor (Alpha) para transparência -->
+            <diffuse>0 0 0 0.95</diffuse>
+            <specular>0.1 0.1 0.1 0.95</specular>
+          </material>
+        </visual>
+
+        <!-- SENSOR DE LUMINOSIDADE (CÂMERA NO FOCO) -->
+        <!-- Foco = 1.8m. Câmera olhando para baixo (pitch 90 graus) -->
+        <sensor name="focus_camera" type="camera">
+          <pose>0 0 1.8 0 1.5708 0</pose>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>parabolic_dish/focus_cam/image</topic>
+          <camera>
+            <horizontal_fov>1.5</horizontal_fov> <!-- Cobre o prato de 3m a 1.8m de distância -->
+            <image>
+              <width>64</width>
+              <height>64</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.005</near>
+              <far>5.0</far>
+            </clip>
+          </camera>
+        </sensor>
+      </link>
+
+      <!-- NOVO LINK: PLACA RASTREADORA -->
+      <link name="link_tracker">
+        <!-- POSIÇÃO INICIAL DA PLACA EM RELAÇÃO AO FRAME DO three_link_model.
+             O que importa é a pose da joint fixa em relação ao link3 abaixo.
+             Aqui pode deixar 0 0 0. -->
+        <pose>-0.072 0.5 2.405 0 0 0</pose>
+
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.001</ixx><iyy>0.001</iyy><izz>0.001</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+
+        <!-- Placa: centro do link_tracker é o centro da placa -->
+        <visual name="tracker_plate_visual">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.2 0.2 0.005</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+          </material>
+        </visual>
+
+        <!-- Disco opaco central (raio 5cm, espessura 0.5cm) -->
+        <visual name="tracker_opaque_disk_visual">
+          <pose>0 0 0.105 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.05</radius> <!-- 5 cm de raio -->
+              <length>0.005</length> <!-- 0.5 cm de espessura -->
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.15 0.15 0.15 1</ambient>
+            <diffuse>0.15 0.15 0.15 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+
+        <!-- Colisão do disco opaco -->
+        <collision name="tracker_opaque_disk_collision">
+          <pose>0 0 0.005 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.05</radius>
+              <length>0.005</length>
+            </cylinder>
+          </geometry>
+        </collision>
+
+        <!-- Anteparo eixo X (Y=0) -->
+        <visual name="tracker_wall_x_visual">
+          <pose>0 0 0.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.2 0.005 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.2 1</ambient>
+            <diffuse>0.2 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Anteparo eixo Y (X=0) -->
+        <visual name="tracker_wall_y_visual">
+          <pose>0 0 0.05 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.005 0.2 0.1</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.2 1</ambient>
+            <diffuse>0.2 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Câmeras - centradas no link_tracker (olhando para +Z, rotação 0 -1.5708 -1.5708) -->
+
+        <!-- Q1: (+0.05,+0.05) - Vermelho -->
+        <sensor name="cam_q1" type="camera">
+          <pose>0.05 0.05 0.003 0 -1.5708 -1.5708</pose>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>plate/cam_q1/image</topic>
+          <camera>
+            <horizontal_fov>1.2</horizontal_fov>
+            <image>
+              <width>64</width>
+              <height>64</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.01</near>
+              <far>50</far>
+            </clip>
+          </camera>
+        </sensor>
+        <visual name="cam_q1_marker">
+          <pose>0.05 0.05 0.008 0 0 0</pose>
+          <geometry>
+            <sphere><radius>0.007</radius></sphere>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient>
+            <diffuse>1 0 0 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Q2: (-0.05,+0.05) - Verde -->
+        <sensor name="cam_q2" type="camera">
+          <pose>-0.05 0.05 0.003 0 -1.5708 -1.5708</pose>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>plate/cam_q2/image</topic>
+          <camera>
+            <horizontal_fov>1.2</horizontal_fov>
+            <image>
+              <width>64</width>
+              <height>64</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.01</near>
+              <far>50</far>
+            </clip>
+          </camera>
+        </sensor>
+        <visual name="cam_q2_marker">
+          <pose>-0.05 0.05 0.008 0 0 0</pose>
+          <geometry>
+            <sphere><radius>0.007</radius></sphere>
+          </geometry>
+          <material>
+            <ambient>0 1 0 1</ambient>
+            <diffuse>0 1 0 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Q3: (-0.05,-0.05) - Azul -->
+        <sensor name="cam_q3" type="camera">
+          <pose>-0.05 -0.05 0.003 0 -1.5708 -1.5708</pose>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>plate/cam_q3/image</topic>
+          <camera>
+            <horizontal_fov>1.2</horizontal_fov>
+            <image>
+              <width>64</width>
+              <height>64</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.01</near>
+              <far>50</far>
+            </clip>
+          </camera>
+        </sensor>
+        <visual name="cam_q3_marker">
+          <pose>-0.05 -0.05 0.008 0 0 0</pose>
+          <geometry>
+            <sphere><radius>0.007</radius></sphere>
+          </geometry>
+          <material>
+            <ambient>0 0 1 1</ambient>
+            <diffuse>0 0 1 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- Q4: (+0.05,-0.05) - Amarelo -->
+        <sensor name="cam_q4" type="camera">
+          <pose>0.05 -0.05 0.003 0 -1.5708 -1.5708</pose>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>plate/cam_q4/image</topic>
+          <camera>
+            <horizontal_fov>1.2</horizontal_fov>
+            <image>
+              <width>64</width>
+              <height>64</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.01</near>
+              <far>50</far>
+            </clip>
+          </camera>
+        </sensor>
+        <visual name="cam_q4_marker">
+          <pose>0.05 -0.05 0.008 0 0 0</pose>
+          <geometry>
+            <sphere><radius>0.007</radius></sphere>
+          </geometry>
+          <material>
+            <ambient>1 1 0 1</ambient>
+            <diffuse>1 1 0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+
+      <!-- JOINTS EXISTENTES -->
+      <joint name="world_to_link1" type="fixed">
+        <parent>world</parent>
+        <child>link1</child>
+      </joint>
+
+      <joint name="joint1" type="revolute">
+        <parent>link1</parent>
+        <child>link2</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-1e16</lower>
+            <upper>1e16</upper>
+            <velocity>10</velocity>
+            <effort>2000</effort>
+          </limit>
+          <dynamics>
+            <damping>0.1</damping>
+            <friction>0.0</friction>
+          </dynamics>
+        </axis>
+        <sensor name="joint1_force_torque" type="force_torque">
+          <always_on>true</always_on>
+          <update_rate>1000</update_rate>
+          <force_torque>
+            <frame>child</frame>
+            <measure_direction>child_to_parent</measure_direction>
+          </force_torque>
+        </sensor>
+      </joint>
+
+      <joint name="joint2" type="revolute">
+        <parent>link2</parent>
+        <child>link3</child>
+        <pose>-0.07 -0.1725 2.0384 0 0 0</pose>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1e16</lower>
+            <upper>1e16</upper>
+            <velocity>10</velocity>
+            <effort>200000</effort>
+          </limit>
+          <dynamics>
+            <damping>0.1</damping>
+            <friction>0.2</friction>
+          </dynamics>
+        </axis>
+        <sensor name="joint2_force_torque" type="force_torque">
+          <always_on>true</always_on>
+          <update_rate>1000</update_rate>
+          <force_torque>
+            <frame>child</frame>
+            <measure_direction>child_to_parent</measure_direction>
+          </force_torque>
+        </sensor>
+      </joint>
+
+      <!-- ========================================== -->
+      <!-- ESFERA GIRATÓRIA 1 (Cinza - Eixo Y)       -->
+      <!-- ========================================== -->
+      <!-- LINK: Esfera 1 -->
+      <link name="link_sphere_1">
+        <pose>0 2.200 1.850 0 0 0</pose>
+        
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.008</ixx><iyy>0.008</iyy><izz>0.008</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        
+        <visual name="sphere_1_visual">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.2</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.3 0.3 0.3 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <!-- JUNTA DE REVOLUÇÃO: link3 -> link_sphere_1 -->
+      <!-- Junta localizada em x=0, y=2.200, z=1.750 -->
+      <!-- Eixo de rotação: Y (horizontal) -->
+      <joint name="joint_sphere_1" type="revolute">
+        <parent>link3</parent>
+        <child>link_sphere_1</child>
+        <!-- Pose da junta no frame do link3 -->
+        <!-- Como link3 está em (0,0,0), a pose é direta -->
+        <pose>0 2.200 1.750 0 0 0</pose>
+        <axis>
+          <xyz>0 1 0</xyz> <!-- Rotação em Y -->
+          <limit>
+            <lower>-1e16</lower> <!-- Sem limite inferior -->
+            <upper>1e16</upper>  <!-- Sem limite superior -->
+            <velocity>10</velocity>
+            <effort>100</effort>
+          </limit>
+          <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+          </dynamics>
+        </axis>
+      </joint>
+
+      <!-- ========================================== -->
+      <!-- ESFERA GIRATÓRIA 2 (Vermelha - +60°)      -->
+      <!-- ========================================== -->
+      <link name="link_sphere_2">
+        <pose>0 2.200 1.850 0 0 0</pose>
+        
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.008</ixx><iyy>0.008</iyy><izz>0.008</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        
+        <visual name="sphere_2_visual">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.2</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.8 0.2 0.2 1</ambient> <!-- Vermelho -->
+            <diffuse>0.8 0.2 0.2 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <!-- Junta inclinada +60° (rotação em torno de eixo inclinado) -->
+      <joint name="joint_sphere_2" type="revolute">
+        <parent>link3</parent>
+        <child>link_sphere_2</child>
+        <pose>0 2.200 1.750 0 0 0</pose>
+        <axis>
+          <!-- Eixo Y rotacionado +60° em torno de Z -->
+          <!-- Y' = (cos(60°), sin(60°), 0) = (0.5, 0.866, 0) -->
+          <xyz>0 0.5 0.866</xyz>
+          <limit>
+            <lower>-1e16</lower>
+            <upper>1e16</upper>
+            <velocity>10</velocity>
+            <effort>100</effort>
+          </limit>
+          <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+          </dynamics>
+        </axis>
+      </joint>
+
+      <!-- ========================================== -->
+      <!-- ESFERA GIRATÓRIA 3 (Azul - -60°)          -->
+      <!-- ========================================== -->
+      <link name="link_sphere_3">
+        <pose>0 2.200 1.850 0 0 0</pose>
+        
+        <inertial>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.008</ixx><iyy>0.008</iyy><izz>0.008</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        
+        <visual name="sphere_3_visual">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.2</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.8 1</ambient> <!-- Azul -->
+            <diffuse>0.2 0.2 0.8 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <!-- Junta inclinada -60° -->
+      <joint name="joint_sphere_3" type="revolute">
+        <parent>link3</parent>
+        <child>link_sphere_3</child>
+        <pose>0 2.200 1.750 0 0 0</pose>
+        <axis>
+          <!-- Eixo Y rotacionado -60° em torno de Z -->
+          <!-- Y' = (cos(-60°), sin(-60°), 0) = (0.5, -0.866, 0) -->
+          <xyz>0 0.5 -0.866</xyz>
+          <limit>
+            <lower>-1e16</lower>
+            <upper>1e16</upper>
+            <velocity>10</velocity>
+            <effort>100</effort>
+          </limit>
+          <dynamics>
+            <damping>0.1</damping>
+            <friction>0.1</friction>
+          </dynamics>
+        </axis>
+      </joint>
+
+      <!-- NOVA JOINT FIXA: link3 -> link_tracker -->
+      <joint name="tracker_fixed_joint" type="fixed">
+        <parent>link3</parent>
+        <child>link_tracker</child>
+        <!-- Pose da placa em relação ao FRAME DO LINK3 -->
+        <!-- Ajuste aqui para reposicionar a placa onde quiser no braço -->
+        <pose>0 0 2.5 0 0 0</pose>
+      </joint>
+
+      <!-- NOVA JOINT FIXA: link3 -> link_parabolic_dish -->
+      <joint name="parabolic_dish_fixed_joint" type="fixed">
+        <parent>link3</parent>
+        <child>link_parabolic_dish</child>
+        <!-- A pose da joint é relativa ao frame do filho (link_parabolic_dish).
+             Como já posicionamos o link corretamente no modelo, a pose da joint pode ser zero. -->
+        <pose>0 0 0 0 0 0</pose>
+      </joint>
+
+      <!-- PLUGINS DE JOINT STATE E CONTROLADORES -->
+      <plugin filename="gz-sim-joint-state-publisher-system"
+              name="gz::sim::systems::JointStatePublisher">
+        <joint_name>joint1</joint_name>
+        <joint_name>joint2</joint_name>
+        <joint_name>joint_sphere_1</joint_name>
+        <joint_name>joint_sphere_2</joint_name>
+        <joint_name>joint_sphere_3</joint_name>
+      </plugin>
+
+      <plugin filename="gz-sim-joint-position-controller-system"
+              name="gz::sim::systems::JointPositionController">
+        <joint_name>joint1</joint_name>
+        <topic>/model/three_link_model/joint/joint1/cmd_pos</topic>
+        <p_gain>1000</p_gain>
+        <i_gain>100</i_gain>
+        <d_gain>2000</d_gain>
+        <i_min>-1000</i_min>
+        <i_max>1000</i_max>
+      </plugin>
+
+      <plugin filename="gz-sim-joint-position-controller-system"
+              name="gz::sim::systems::JointPositionController">
+        <joint_name>joint2</joint_name>
+        <topic>/model/three_link_model/joint/joint2/cmd_pos</topic>
+        <p_gain>5000</p_gain>
+        <i_gain>5000</i_gain>
+        <d_gain>5000</d_gain>
+        <i_min>-10000</i_min>
+        <i_max>10000</i_max>
+      </plugin>
+
+      <!-- Controlador de velocidade para a esfera 1 (Cinza - Eixo Y) -->
+      <plugin filename="gz-sim-joint-controller-system"
+              name="gz::sim::systems::JointController">
+        <joint_name>joint_sphere_1</joint_name>
+        <use_velocity_commands>true</use_velocity_commands>
+        <topic>/model/three_link_model/joint/joint_sphere_1/cmd_vel</topic>
+        <p_gain>100</p_gain>
+        <i_gain>10</i_gain>
+        <d_gain>1</d_gain>
+      </plugin>
+
+      <!-- Controlador de velocidade para a esfera 2 (Vermelha - +60°) -->
+      <plugin filename="gz-sim-joint-controller-system"
+              name="gz::sim::systems::JointController">
+        <joint_name>joint_sphere_2</joint_name>
+        <use_velocity_commands>true</use_velocity_commands>
+        <topic>/model/three_link_model/joint/joint_sphere_2/cmd_vel</topic>
+        <p_gain>100</p_gain>
+        <i_gain>10</i_gain>
+        <d_gain>1</d_gain>
+      </plugin>
+
+      <!-- Controlador de velocidade para a esfera 3 (Azul - -60°) -->
+      <plugin filename="gz-sim-joint-controller-system"
+              name="gz::sim::systems::JointController">
+        <joint_name>joint_sphere_3</joint_name>
+        <use_velocity_commands>true</use_velocity_commands>
+        <topic>/model/three_link_model/joint/joint_sphere_3/cmd_vel</topic>
+        <p_gain>100</p_gain>
+        <i_gain>10</i_gain>
+        <d_gain>1</d_gain>
+      </plugin>
+    </model>
+
+    <!-- ROSA DOS VENTOS (cole aqui exatamente o bloco que você já tinha) -->
+    <!-- Vou resumir, mas você pode manter o seu trecho original sem mudar nada -->
+    <model name="compass">
+      <pose>2 2 0 0 0 0</pose>
+      <static>true</static>
+      <!-- TODO: copie aqui todos os <link> da sua rosa dos ventos original -->
+      <!-- (compass_base, N_arrow, S_arrow, E_arrow, W_arrow, NE_arrow, SE_arrow, SW_arrow, NW_arrow, N_label, S_label, E_label, W_label, NE_label, SE_label, SW_label, NW_label) -->
+    </model>
+
+  </world>
+</sdf>
+
