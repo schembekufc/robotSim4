@@ -69,7 +69,7 @@ class OscillatoryControlGUI(QWidget):
         
         # ===== ESFERA 1 (Verde - Eixo X) =====
         group_sphere1 = QGroupBox("Esfera 1 (Verde - Eixo X)")
-        group_sphere1.setStyleSheet("QGroupBox::title { color: green; font-weight: bold; }")
+        group_sphere1.setStyleSheet("QGroupBox::title { color: green; font: bold; }")
         grid_sphere1 = QGridLayout()
         
         # Checkbox para habilitar
@@ -125,7 +125,7 @@ class OscillatoryControlGUI(QWidget):
         
         # ===== ESFERA 2 (Vermelha - Eixo Y) =====
         group_sphere2 = QGroupBox("Esfera 2 (Vermelha - Eixo Y)")
-        group_sphere2.setStyleSheet("QGroupBox::title { color: red; font-weight: bold; }")
+        group_sphere2.setStyleSheet("QGroupBox::title { color: red; font: bold; }")
         grid_sphere2 = QGridLayout()
         
         self.check_sphere2 = QCheckBox("Habilitar Oscilação")
@@ -177,7 +177,7 @@ class OscillatoryControlGUI(QWidget):
         
         # ===== ESFERA 3 (Azul - Eixo Z) =====
         group_sphere3 = QGroupBox("Esfera 3 (Azul - Eixo Z)")
-        group_sphere3.setStyleSheet("QGroupBox::title { color: blue; font-weight: bold; }")
+        group_sphere3.setStyleSheet("QGroupBox::title { color: blue; font: bold; }")
         grid_sphere3 = QGridLayout()
         
         self.check_sphere3 = QCheckBox("Habilitar Oscilação")
