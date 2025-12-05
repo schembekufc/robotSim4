@@ -112,3 +112,7 @@ Este projeto é de uso educacional e acadêmico.
 ## 👤 Autor
 
 Desenvolvido como parte de pesquisa em sistemas de rastreamento solar.
+
+---
+## 📝 Histórico de Modificações
+- 05/12/2025: Primeiro teste de commit - por Jhoni
