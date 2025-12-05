@@ -30,15 +30,15 @@ class OscillatoryControlGUI(QWidget):
         # Nó Gazebo
         self.node = Node()
         
-        # Publishers para as 3 esferas
+        # Publishers para as 3 esferas (POSIÇÃO)
         self.pub_sphere1 = self.node.advertise(
-            "/model/three_link_model/joint/joint_sphere_1/cmd_vel", Double
+            "/model/three_link_model/joint/joint_sphere_1/cmd_pos", Double
         )
         self.pub_sphere2 = self.node.advertise(
-            "/model/three_link_model/joint/joint_sphere_2/cmd_vel", Double
+            "/model/three_link_model/joint/joint_sphere_2/cmd_pos", Double
         )
         self.pub_sphere3 = self.node.advertise(
-            "/model/three_link_model/joint/joint_sphere_3/cmd_vel", Double
+            "/model/three_link_model/joint/joint_sphere_3/cmd_pos", Double
         )
         
         # Parâmetros de oscilação para cada esfera
@@ -46,9 +46,9 @@ class OscillatoryControlGUI(QWidget):
         self.freq_sphere2 = 1.0  # Hz
         self.freq_sphere3 = 1.0  # Hz
         
-        self.amplitude_sphere1 = 5.0  # m/s (velocidade máxima)
-        self.amplitude_sphere2 = 5.0  # m/s
-        self.amplitude_sphere3 = 5.0  # m/s
+        self.amplitude_sphere1 = 5.0  # metros (deslocamento máximo)
+        self.amplitude_sphere2 = 5.0  # metros
+        self.amplitude_sphere3 = 5.0  # metros
         
         self.enabled_sphere1 = False
         self.enabled_sphere2 = False
@@ -95,12 +95,12 @@ class OscillatoryControlGUI(QWidget):
         grid_sphere1.addWidget(self.slider_freq1, 1, 1)
         grid_sphere1.addWidget(self.spin_freq1, 1, 2)
         
-        # Amplitude (velocidade máxima)
-        lbl_amp1 = QLabel("Amplitude (m/s):")
+        # Amplitude (deslocamento máximo)
+        lbl_amp1 = QLabel("Amplitude (metros):")
         self.slider_amp1 = QSlider(Qt.Horizontal)
-        self.slider_amp1.setMinimum(1)     # 0.1 m/s
-        self.slider_amp1.setMaximum(300)   # 30.0 m/s
-        self.slider_amp1.setValue(50)      # 5.0 m/s
+        self.slider_amp1.setMinimum(1)     # 0.1 m
+        self.slider_amp1.setMaximum(300)   # 30.0 m
+        self.slider_amp1.setValue(50)      # 5.0 m
         self.slider_amp1.valueChanged.connect(self.on_amp1_changed)
         
         self.spin_amp1 = QDoubleSpinBox()
@@ -148,11 +148,11 @@ class OscillatoryControlGUI(QWidget):
         grid_sphere2.addWidget(self.slider_freq2, 1, 1)
         grid_sphere2.addWidget(self.spin_freq2, 1, 2)
         
-        lbl_amp2 = QLabel("Amplitude (m/s):")
+        lbl_amp2 = QLabel("Amplitude (metros):")
         self.slider_amp2 = QSlider(Qt.Horizontal)
-        self.slider_amp2.setMinimum(1)     # 0.1 m/s
-        self.slider_amp2.setMaximum(300)   # 30.0 m/s
-        self.slider_amp2.setValue(50)      # 5.0 m/s
+        self.slider_amp2.setMinimum(1)     # 0.1 m
+        self.slider_amp2.setMaximum(300)   # 30.0 m
+        self.slider_amp2.setValue(50)      # 5.0 m
         self.slider_amp2.valueChanged.connect(self.on_amp2_changed)
         
         self.spin_amp2 = QDoubleSpinBox()
@@ -199,11 +199,11 @@ class OscillatoryControlGUI(QWidget):
         grid_sphere3.addWidget(self.slider_freq3, 1, 1)
         grid_sphere3.addWidget(self.spin_freq3, 1, 2)
         
-        lbl_amp3 = QLabel("Amplitude (m/s):")
+        lbl_amp3 = QLabel("Amplitude (metros):")
         self.slider_amp3 = QSlider(Qt.Horizontal)
-        self.slider_amp3.setMinimum(1)     # 0.1 m/s
-        self.slider_amp3.setMaximum(300)   # 30.0 m/s
-        self.slider_amp3.setValue(50)      # 5.0 m/s
+        self.slider_amp3.setMinimum(1)     # 0.1 m
+        self.slider_amp3.setMaximum(300)   # 30.0 m
+        self.slider_amp3.setValue(50)      # 5.0 m
         self.slider_amp3.valueChanged.connect(self.on_amp3_changed)
         
         self.spin_amp3 = QDoubleSpinBox()
@@ -264,7 +264,7 @@ class OscillatoryControlGUI(QWidget):
         else:
             self.lbl_status1.setText("Status: Parado")
             self.lbl_status1.setStyleSheet("color: red; font-weight: bold;")
-            self.send_velocity(1, 0.0)
+            self.send_position(1, 0.0)  # Volta para o centro
     
     def on_freq1_changed(self, value):
         freq = value / 10.0
@@ -305,7 +305,7 @@ class OscillatoryControlGUI(QWidget):
         else:
             self.lbl_status2.setText("Status: Parado")
             self.lbl_status2.setStyleSheet("color: red; font-weight: bold;")
-            self.send_velocity(2, 0.0)
+            self.send_position(2, 0.0)  # Volta para o centro
     
     def on_freq2_changed(self, value):
         freq = value / 10.0
@@ -346,7 +346,7 @@ class OscillatoryControlGUI(QWidget):
         else:
             self.lbl_status3.setText("Status: Parado")
             self.lbl_status3.setStyleSheet("color: red; font-weight: bold;")
-            self.send_velocity(3, 0.0)
+            self.send_position(3, 0.0)  # Volta para o centro
     
     def on_freq3_changed(self, value):
         freq = value / 10.0
@@ -380,29 +380,29 @@ class OscillatoryControlGUI(QWidget):
 
     # ===== FUNÇÕES AUXILIARES =====
     def update_oscillations(self):
-        """Atualiza as velocidades oscilatórias de todas as esferas."""
+        """Atualiza as posições oscilatórias de todas as esferas."""
         current_time = time.time() - self.start_time
         
         # Esfera 1
         if self.enabled_sphere1:
-            # Velocidade senoidal: v(t) = A * sin(2π * f * t)
-            velocity1 = self.amplitude_sphere1 * math.sin(2 * math.pi * self.freq_sphere1 * current_time)
-            self.send_velocity(1, velocity1)
+            # Posição senoidal: x(t) = A × sin(2π × f × t)
+            position1 = self.amplitude_sphere1 * math.sin(2 * math.pi * self.freq_sphere1 * current_time)
+            self.send_position(1, position1)
         
         # Esfera 2
         if self.enabled_sphere2:
-            velocity2 = self.amplitude_sphere2 * math.sin(2 * math.pi * self.freq_sphere2 * current_time)
-            self.send_velocity(2, velocity2)
+            position2 = self.amplitude_sphere2 * math.sin(2 * math.pi * self.freq_sphere2 * current_time)
+            self.send_position(2, position2)
         
         # Esfera 3
         if self.enabled_sphere3:
-            velocity3 = self.amplitude_sphere3 * math.sin(2 * math.pi * self.freq_sphere3 * current_time)
-            self.send_velocity(3, velocity3)
+            position3 = self.amplitude_sphere3 * math.sin(2 * math.pi * self.freq_sphere3 * current_time)
+            self.send_position(3, position3)
 
-    def send_velocity(self, sphere_num, velocity):
-        """Envia comando de velocidade para a esfera especificada."""
+    def send_position(self, sphere_num, position):
+        """Envia comando de posição para a esfera especificada."""
         msg = Double()
-        msg.data = velocity
+        msg.data = position
         
         if sphere_num == 1:
             self.pub_sphere1.publish(msg)
