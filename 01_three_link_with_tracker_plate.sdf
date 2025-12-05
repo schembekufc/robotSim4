@@ -814,37 +814,34 @@
         <i_max>10000</i_max>
       </plugin>
 
-      <!-- Controlador de velocidade para a esfera 1 (Verde - Eixo X) -->
-      <plugin filename="gz-sim-joint-controller-system"
-              name="gz::sim::systems::JointController">
+      <!-- Controlador de posição para a esfera 1 (Verde - Eixo X) -->
+      <plugin filename="gz-sim-joint-position-controller-system"
+              name="gz::sim::systems::JointPositionController">
         <joint_name>joint_sphere_1</joint_name>
-        <use_velocity_commands>true</use_velocity_commands>
-        <topic>/model/three_link_model/joint/joint_sphere_1/cmd_vel</topic>
-        <p_gain>100</p_gain>
-        <i_gain>10</i_gain>
-        <d_gain>1</d_gain>
+        <topic>/model/three_link_model/joint/joint_sphere_1/cmd_pos</topic>
+        <p_gain>1000</p_gain>
+        <i_gain>100</i_gain>
+        <d_gain>50</d_gain>
       </plugin>
 
-      <!-- Controlador de velocidade para a esfera 2 (Vermelha - Eixo Y) -->
-      <plugin filename="gz-sim-joint-controller-system"
-              name="gz::sim::systems::JointController">
+      <!-- Controlador de posição para a esfera 2 (Vermelha - Eixo Y) -->
+      <plugin filename="gz-sim-joint-position-controller-system"
+              name="gz::sim::systems::JointPositionController">
         <joint_name>joint_sphere_2</joint_name>
-        <use_velocity_commands>true</use_velocity_commands>
-        <topic>/model/three_link_model/joint/joint_sphere_2/cmd_vel</topic>
-        <p_gain>100</p_gain>
-        <i_gain>10</i_gain>
-        <d_gain>1</d_gain>
+        <topic>/model/three_link_model/joint/joint_sphere_2/cmd_pos</topic>
+        <p_gain>1000</p_gain>
+        <i_gain>100</i_gain>
+        <d_gain>50</d_gain>
       </plugin>
 
-      <!-- Controlador de velocidade para a esfera 3 (Azul - Eixo Z) -->
-      <plugin filename="gz-sim-joint-controller-system"
-              name="gz::sim::systems::JointController">
+      <!-- Controlador de posição para a esfera 3 (Azul - Eixo Z) -->
+      <plugin filename="gz-sim-joint-position-controller-system"
+              name="gz::sim::systems::JointPositionController">
         <joint_name>joint_sphere_3</joint_name>
-        <use_velocity_commands>true</use_velocity_commands>
-        <topic>/model/three_link_model/joint/joint_sphere_3/cmd_vel</topic>
-        <p_gain>100</p_gain>
-        <i_gain>10</i_gain>
-        <d_gain>1</d_gain>
+        <topic>/model/three_link_model/joint/joint_sphere_3/cmd_pos</topic>
+        <p_gain>1000</p_gain>
+        <i_gain>100</i_gain>
+        <d_gain>50</d_gain>
       </plugin>
     </model>
 
