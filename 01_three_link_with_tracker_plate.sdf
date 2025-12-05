@@ -608,7 +608,7 @@
       </joint>
 
       <!-- ========================================== -->
-      <!-- ESFERA GIRATÓRIA 1 (Cinza - Eixo Y)       -->
+      <!-- ESFERA MÓVEL 1 (Verde - Eixo X)           -->
       <!-- ========================================== -->
       <!-- LINK: Esfera 1 -->
       <link name="link_sphere_1">
@@ -630,28 +630,27 @@
             </sphere>
           </geometry>
           <material>
-            <ambient>0.3 0.3 0.3 1</ambient>
-            <diffuse>0.3 0.3 0.3 1</diffuse>
+            <ambient>0.2 0.8 0.2 1</ambient>
+            <diffuse>0.2 0.8 0.2 1</diffuse>
             <specular>0.5 0.5 0.5 1</specular>
           </material>
         </visual>
       </link>
 
-      <!-- JUNTA DE REVOLUÇÃO: link3 -> link_sphere_1 -->
+      <!-- JUNTA PRISMÁTICA: link3 -> link_sphere_1 -->
       <!-- Junta localizada em x=0, y=2.200, z=1.750 -->
-      <!-- Eixo de rotação: Y (horizontal) -->
-      <joint name="joint_sphere_1" type="revolute">
+      <!-- Eixo de translação: X -->
+      <joint name="joint_sphere_1" type="prismatic">
         <parent>link3</parent>
         <child>link_sphere_1</child>
         <!-- Pose da junta no frame do link3 -->
-        <!-- Como link3 está em (0,0,0), a pose é direta -->
         <pose>0 2.200 1.750 0 0 0</pose>
         <axis>
-          <xyz>0 1 0</xyz> <!-- Rotação em Y -->
+          <xyz>1 0 0</xyz> <!-- Movimento em X -->
           <limit>
-            <lower>-1e16</lower> <!-- Sem limite inferior -->
-            <upper>1e16</upper>  <!-- Sem limite superior -->
-            <velocity>10</velocity>
+            <lower>-2.0</lower> <!-- Limite de -2m -->
+            <upper>2.0</upper>  <!-- Limite de +2m -->
+            <velocity>1.0</velocity>
             <effort>100</effort>
           </limit>
           <dynamics>
@@ -662,7 +661,7 @@
       </joint>
 
       <!-- ========================================== -->
-      <!-- ESFERA GIRATÓRIA 2 (Vermelha - +60°)      -->
+      <!-- ESFERA MÓVEL 2 (Vermelha - Eixo Y)        -->
       <!-- ========================================== -->
       <link name="link_sphere_2">
         <pose>0 2.200 1.850 0 0 0</pose>
@@ -690,19 +689,17 @@
         </visual>
       </link>
 
-      <!-- Junta inclinada +60° (rotação em torno de eixo inclinado) -->
-      <joint name="joint_sphere_2" type="revolute">
+      <!-- Junta prismática: movimento em Y -->
+      <joint name="joint_sphere_2" type="prismatic">
         <parent>link3</parent>
         <child>link_sphere_2</child>
         <pose>0 2.200 1.750 0 0 0</pose>
         <axis>
-          <!-- Eixo Y rotacionado +60° em torno de Z -->
-          <!-- Y' = (cos(60°), sin(60°), 0) = (0.5, 0.866, 0) -->
-          <xyz>0 0.5 0.866</xyz>
+          <xyz>0 1 0</xyz> <!-- Movimento em Y -->
           <limit>
-            <lower>-1e16</lower>
-            <upper>1e16</upper>
-            <velocity>10</velocity>
+            <lower>-2.0</lower> <!-- Limite de -2m -->
+            <upper>2.0</upper>  <!-- Limite de +2m -->
+            <velocity>1.0</velocity>
             <effort>100</effort>
           </limit>
           <dynamics>
@@ -713,7 +710,7 @@
       </joint>
 
       <!-- ========================================== -->
-      <!-- ESFERA GIRATÓRIA 3 (Azul - -60°)          -->
+      <!-- ESFERA MÓVEL 3 (Azul - Eixo Z)            -->
       <!-- ========================================== -->
       <link name="link_sphere_3">
         <pose>0 2.200 1.850 0 0 0</pose>
@@ -741,19 +738,17 @@
         </visual>
       </link>
 
-      <!-- Junta inclinada -60° -->
-      <joint name="joint_sphere_3" type="revolute">
+      <!-- Junta prismática: movimento em Z -->
+      <joint name="joint_sphere_3" type="prismatic">
         <parent>link3</parent>
         <child>link_sphere_3</child>
         <pose>0 2.200 1.750 0 0 0</pose>
         <axis>
-          <!-- Eixo Y rotacionado -60° em torno de Z -->
-          <!-- Y' = (cos(-60°), sin(-60°), 0) = (0.5, -0.866, 0) -->
-          <xyz>0 0.5 -0.866</xyz>
+          <xyz>0 0 1</xyz> <!-- Movimento em Z -->
           <limit>
-            <lower>-1e16</lower>
-            <upper>1e16</upper>
-            <velocity>10</velocity>
+            <lower>-2.0</lower> <!-- Limite de -2m -->
+            <upper>2.0</upper>  <!-- Limite de +2m -->
+            <velocity>1.0</velocity>
             <effort>100</effort>
           </limit>
           <dynamics>
@@ -813,7 +808,7 @@
         <i_max>10000</i_max>
       </plugin>
 
-      <!-- Controlador de velocidade para a esfera 1 (Cinza - Eixo Y) -->
+      <!-- Controlador de velocidade para a esfera 1 (Verde - Eixo X) -->
       <plugin filename="gz-sim-joint-controller-system"
               name="gz::sim::systems::JointController">
         <joint_name>joint_sphere_1</joint_name>
@@ -824,7 +819,7 @@
         <d_gain>1</d_gain>
       </plugin>
 
-      <!-- Controlador de velocidade para a esfera 2 (Vermelha - +60°) -->
+      <!-- Controlador de velocidade para a esfera 2 (Vermelha - Eixo Y) -->
       <plugin filename="gz-sim-joint-controller-system"
               name="gz::sim::systems::JointController">
         <joint_name>joint_sphere_2</joint_name>
@@ -835,7 +830,7 @@
         <d_gain>1</d_gain>
       </plugin>
 
-      <!-- Controlador de velocidade para a esfera 3 (Azul - -60°) -->
+      <!-- Controlador de velocidade para a esfera 3 (Azul - Eixo Z) -->
       <plugin filename="gz-sim-joint-controller-system"
               name="gz::sim::systems::JointController">
         <joint_name>joint_sphere_3</joint_name>
