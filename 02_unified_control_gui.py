@@ -160,7 +160,7 @@ class UnifiedControlGUI(QWidget):
         # ===== CONTROLE DO SOL =====
         self.azimute_deg = -45.0
         self.elevacao_deg = 45.0
-        self.intensity = 10.0
+        self.intensity = 1.0
         self.raio = 100.0
         
         self.topic_light = f"/world/{WORLD_NAME}/light_config"

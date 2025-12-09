@@ -6,7 +6,7 @@
     <light name="sun" type="directional">
       <pose>0 0 100 0 0 0</pose>
       <cast_shadows>true</cast_shadows>
-      <intensity>10.0</intensity>
+      <intensity>1.0</intensity>
       <direction>0 0 -1</direction>
       <diffuse>1 1 1 1</diffuse>
       <specular>0.8 0.8 0.8 1</specular>
@@ -39,6 +39,7 @@
       <render_engine>ogre2</render_engine>
     </plugin>
     <plugin name="gz::sim::systems::ForceTorque" filename="gz-sim-forcetorque-system"/>
+
 
     <!-- Chão -->
     <model name="chao">
@@ -562,7 +563,7 @@
           <limit>
             <lower>-1e16</lower>
             <upper>1e16</upper>
-            <velocity>10</velocity>
+            <velocity>1</velocity>
             <effort>2000</effort>
           </limit>
           <dynamics>
@@ -844,6 +845,8 @@
         <d_gain>50</d_gain>
       </plugin>
     </model>
+
+
 
     <!-- ROSA DOS VENTOS (cole aqui exatamente o bloco que você já tinha) -->
     <!-- Vou resumir, mas você pode manter o seu trecho original sem mudar nada -->
