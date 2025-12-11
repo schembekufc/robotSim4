@@ -1,4 +1,12 @@
-# 🤖 Robot Simulation 4 - Gazebo Tracker Plate
+# 🤖 Robot Sim 4 - Sistema de Rastreamento Solar
+
+![Status](https://img.shields.io/badge/Status-Active-success)
+![Gazebo](https://img.shields.io/badge/Gazebo-Garden-orange)
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+
+## 📋 Sobre o Projeto
+Este projeto simula um sistema de rastreamento solar utilizando Gazebo Garden e Python.
+ - Gazebo Tracker Plate
 
 Simulação de uma placa rastreadora solar com 3 links e sensores de luz no Gazebo.
 
