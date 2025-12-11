@@ -69,8 +69,8 @@ class TrackerController:
         self.cam_reader = QuadCameraReader(self.node)
 
         # Publishers para comandos de junta
-        self.pub_joint1 = self.node.advertise("/model/three_link_model/joint/joint1/cmd_pos", Double)
-        self.pub_joint2 = self.node.advertise("/model/three_link_model/joint/joint2/cmd_pos", Double)
+        self.pub_joint1 = self.node.advertise("/model/three_link_model/joint/joint_azimuth/cmd_pos", Double)
+        self.pub_joint2 = self.node.advertise("/model/three_link_model/joint/joint_elevation/cmd_pos", Double)
 
         # Estimativa de posição atual das juntas (somente no script)
         self.joint1_pos = 0.0  # rad
@@ -89,9 +89,9 @@ class TrackerController:
     def send_joint_command(self, joint_name, pos):
         msg = Double()
         msg.data = pos
-        if joint_name == "joint1":
+        if joint_name == "joint_azimuth":
             self.pub_joint1.publish(msg)
-        elif joint_name == "joint2":
+        elif joint_name == "joint_elevation":
             self.pub_joint2.publish(msg)
 
     def control_loop(self):
@@ -147,8 +147,8 @@ class TrackerController:
                     self.joint1_pos -= step1
 
                 # Envia comandos
-                self.send_joint_command("joint1", self.joint1_pos)
-                self.send_joint_command("joint2", self.joint2_pos)
+                self.send_joint_command("joint_azimuth", self.joint1_pos)
+                self.send_joint_command("joint_elevation", self.joint2_pos)
 
                 print(f"cmd joint1={self.joint1_pos:.3f} rad (step={step1:.3f})  "
                       f"joint2={self.joint2_pos:.3f} rad (step={step2:.3f})\n")

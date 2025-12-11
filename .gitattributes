@@ -1,0 +1,2 @@
+models/catia/2_Torre.dae filter=lfs diff=lfs merge=lfs -text
+formas/parabolic_dish.stl filter=lfs diff=lfs merge=lfs -text

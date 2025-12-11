@@ -276,8 +276,8 @@ class TrackerAutoGUI(QWidget):
             self.log_debug("Iniciando leitura de posições...")
             
             # Lê as posições atuais via subprocess
-            j1_atual = JointStateReader.read_joint_position("joint1")
-            j2_atual = JointStateReader.read_joint_position("joint2")
+            j1_atual = JointStateReader.read_joint_position("joint_azimuth")
+            j2_atual = JointStateReader.read_joint_position("joint_elevation")
             
             self.log_debug(f"Leitura: j1={j1_atual}, j2={j2_atual}")
             
@@ -301,10 +301,10 @@ class TrackerAutoGUI(QWidget):
             
             # Cria os publishers
             self.pub_joint1 = self.node.advertise(
-                "/model/three_link_model/joint/joint1/cmd_pos", Double
+                "/model/three_link_model/joint/joint_azimuth/cmd_pos", Double
             )
             self.pub_joint2 = self.node.advertise(
-                "/model/three_link_model/joint/joint2/cmd_pos", Double
+                "/model/three_link_model/joint/joint_elevation/cmd_pos", Double
             )
             
             # Ativa o tracking
@@ -344,9 +344,9 @@ class TrackerAutoGUI(QWidget):
         
         msg = Double()
         msg.data = pos
-        if name == "joint1":
+        if name == "joint_azimuth":
             self.pub_joint1.publish(msg)
-        elif name == "joint2":
+        elif name == "joint_elevation":
             self.pub_joint2.publish(msg)
 
     def set_control_frequency(self, hz: float):
@@ -447,8 +447,8 @@ class TrackerAutoGUI(QWidget):
         self.lbl_j2_real.setText(f"joint2 comando (rad): {joint2_cmd:.4f}")
 
         # Envia comando
-        self.send_joint("joint1", joint1_cmd)
-        self.send_joint("joint2", joint2_cmd)
+        self.send_joint("joint_azimuth", joint1_cmd)
+        self.send_joint("joint_elevation", joint2_cmd)
 
 
 def main():

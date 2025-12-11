@@ -456,14 +456,14 @@ class UnifiedControlGUI(QWidget):
         dish_rotation_matrix = np.eye(3)
 
         for p in msg.pose:
-            if "link_parabolic_dish" in p.name:
+            if "link_dish" in p.name:
                 dish_rotation_matrix = quaternion_to_rotation_matrix(p.orientation)
                 found = True
                 break
         
         if not found:
             for p in msg.pose:
-                if "link3" in p.name:
+                if "link_arm" in p.name:
                     dish_rotation_matrix = quaternion_to_rotation_matrix(p.orientation)
                     found = True
                     break
@@ -516,8 +516,8 @@ class UnifiedControlGUI(QWidget):
             self.lbl_status.setStyleSheet("color: blue; font-weight: bold;")
             self.log_debug("Iniciando leitura de posições...")
             
-            j1_atual = JointStateReader.read_joint_position("joint1")
-            j2_atual = JointStateReader.read_joint_position("joint2")
+            j1_atual = JointStateReader.read_joint_position("joint_azimuth")
+            j2_atual = JointStateReader.read_joint_position("joint_elevation")
             
             self.log_debug(f"Leitura: j1={j1_atual}, j2={j2_atual}")
             
@@ -537,10 +537,10 @@ class UnifiedControlGUI(QWidget):
             self.joint2_offset = 0.0
             
             self.pub_joint1 = self.node.advertise(
-                "/model/three_link_model/joint/joint1/cmd_pos", Double
+                "/model/three_link_model/joint/joint_azimuth/cmd_pos", Double
             )
             self.pub_joint2 = self.node.advertise(
-                "/model/three_link_model/joint/joint2/cmd_pos", Double
+                "/model/three_link_model/joint/joint_elevation/cmd_pos", Double
             )
             
             self.tracking_active = True
@@ -573,9 +573,9 @@ class UnifiedControlGUI(QWidget):
         
         msg = Double()
         msg.data = pos
-        if name == "joint1":
+        if name == "joint_azimuth":
             self.pub_joint1.publish(msg)
-        elif name == "joint2":
+        elif name == "joint_elevation":
             self.pub_joint2.publish(msg)
 
     def control_step(self):
@@ -653,8 +653,8 @@ class UnifiedControlGUI(QWidget):
         self.lbl_j1_real.setText(f"joint1 comando (rad): {joint1_cmd:.4f}")
         self.lbl_j2_real.setText(f"joint2 comando (rad): {joint2_cmd:.4f}")
 
-        self.send_joint("joint1", joint1_cmd)
-        self.send_joint("joint2", joint2_cmd)
+        self.send_joint("joint_azimuth", joint1_cmd)
+        self.send_joint("joint_elevation", joint2_cmd)
 
     # ===== CALLBACKS CONTROLE DO SOL =====
     def on_slider_az_changed(self, value):

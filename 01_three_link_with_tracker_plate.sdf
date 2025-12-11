@@ -71,8 +71,8 @@
       <pose>0 0 0 0 0 0</pose>
       <static>false</static>
 
-      <!-- LINK 1 -->
-      <link name="link1">
+      <!-- LINK BASE -->
+      <link name="link_base">
         <pose>0 0 0 0 0 0</pose>
         <inertial>
           <mass>2.0</mass>
@@ -81,15 +81,15 @@
             <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
           </inertia>
         </inertial>
-        <collision name="link1_collision">
+        <collision name="collision_base">
           <geometry>
             <box><size>0.2 0.2 0.2</size></box>
           </geometry>
         </collision>
-        <visual name="link1_visual">
+        <visual name="visual_base_structure">
           <geometry>
             <mesh>
-              <uri>file:///home/lhmt-jhoni/testes/formas/catia/1_Base.dae</uri>
+              <uri>file://models/catia/1_Base.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -100,8 +100,8 @@
         </visual>
       </link>
 
-      <!-- LINK 2 -->
-      <link name="link2">
+      <!-- LINK TOWER -->
+      <link name="link_tower">
         <pose>0 0 0 0 0 0</pose>
         <inertial>
           <mass>20</mass>
@@ -110,17 +110,17 @@
             <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
           </inertia>
         </inertial>
-        <collision name="link2_collision">
+        <collision name="collision_tower">
           <pose>0 0 1.283 0 0 0</pose>
           <geometry>
             <box><size>0.4 0.4 1.0</size></box>
           </geometry>
         </collision>
-        <visual name="link2_visual">
+        <visual name="visual_tower_structure">
           <pose>0 0 1.283 0 0 0</pose>
           <geometry>
             <mesh>
-              <uri>file:///home/lhmt-jhoni/testes/formas/catia/2_Torre.dae</uri>
+              <uri>file://models/catia/2_Torre.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -131,8 +131,8 @@
         </visual>
       </link>
 
-      <!-- LINK 3 (só o braço H) -->
-      <link name="link3">
+      <!-- LINK ARM (Braço H) -->
+      <link name="link_arm">
         <pose>0 0 0 0 0 0</pose>
         <inertial>
           <mass>25</mass>
@@ -141,17 +141,17 @@
             <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
           </inertia>
         </inertial>
-        <collision name="link3_collision">
+        <collision name="collision_arm">
           <pose>-0.07 -0.1725 2.0384 0 0 0</pose>
           <geometry>
             <box><size>0.5 0.3 0.8</size></box>
           </geometry>
         </collision>
-        <visual name="link3_visual">
+        <visual name="visual_arm_structure">
           <pose>-0.07 -0.1725 2.0384 0 0 0</pose>
           <geometry>
             <mesh>
-              <uri>file:///home/lhmt-jhoni/testes/formas/catia/3_BracoH.dae</uri>
+              <uri>file://models/catia/3_BracoH.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -165,7 +165,7 @@
         <!-- ASTE DE FIXAÇÃO DA PLACA RASTREADORA       -->
         <!-- ========================================== -->
         <!-- Barra cilíndrica vertical conectando o link3 à placa -->
-        <visual name="tracker_support_rod_visual">
+        <visual name="visual_support_rod">
           <!-- Posição central da barra: meio entre 2.105 e 2.405 = 2.255 -->
           <pose>-0.072 0.5 2.255 0 0 0</pose>
           <geometry>
@@ -182,7 +182,7 @@
         </visual>
         
         <!-- Colisão da aste -->
-        <collision name="tracker_support_rod_collision">
+        <collision name="collision_support_rod">
           <pose>-0.072 0.5 2.255 0 0 0</pose>
           <geometry>
             <cylinder>
@@ -197,7 +197,7 @@
       <!-- ========================================== -->
       <!-- LINK DO PRATO PARABÓLICO (Espelho)         -->
       <!-- ========================================== -->
-      <link name="link_parabolic_dish">
+      <link name="link_dish">
         <!-- Pose inicial do link (será ajustada pela joint) -->
         <pose>-0.07 2.143 2.043 0 0 0</pose>
         
@@ -217,11 +217,11 @@
         </inertial>
         
         <!-- Visual do prato -->
-        <visual name="parabolic_dish_visual">
+        <visual name="visual_dish_reflector">
           <pose>0 0 0 0 0 0</pose>
           <geometry>
             <mesh>
-              <uri>file:///home/lhmt-jhoni/Gazebo/robotSim2/formas/parabolic_dish.stl</uri>
+              <uri>file://formas/parabolic_dish.stl</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -240,18 +240,18 @@
         </visual>
         
         <!-- Colisão do prato -->
-        <collision name="parabolic_dish_collision">
+        <collision name="collision_dish">
           <pose>0 0 0 0 0 0</pose>
           <geometry>
             <mesh>
-              <uri>file:///home/lhmt-jhoni/Gazebo/robotSim2/formas/parabolic_dish.stl</uri>
+              <uri>file://formas/parabolic_dish.stl</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
         </collision>
 
         <!-- VISUAL: Haste de suporte do sensor (Feed Support) -->
-        <visual name="feed_support_rod_visual">
+        <visual name="visual_feed_support">
           <pose>0 0 0.9 0 0 0</pose> <!-- Centro da haste em Z=0.9 (metade de 1.8) -->
           <geometry>
             <cylinder>
@@ -266,7 +266,7 @@
         </visual>
 
         <!-- VISUAL: Caixa do Sensor (Sensor Housing) -->
-        <visual name="feed_sensor_housing_visual">
+        <visual name="visual_sensor_housing">
           <pose>0 0 1.8 0 0 0</pose> <!-- No foco -->
           <geometry>
             <cylinder>
@@ -281,12 +281,12 @@
         </visual>
 
         <!-- FILTRO ESCURO (Lente de óculos de sol) -->
-        <visual name="camera_filter_visual">
+        <visual name="visual_filter_dark">
           <pose>0 0 1.75 0 0 0</pose> <!-- 5cm abaixo da câmera -->
           <cast_shadows>false</cast_shadows>
           <geometry>
             <mesh>
-              <uri>file:///home/lhmt-jhoni/Gazebo/robotSim3/lens_mask.obj</uri>
+              <uri>file://lens_mask.obj</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
@@ -298,7 +298,7 @@
         </visual>
 
         <!-- LENTE CENTRAL (Vidro ajustável) -->
-        <visual name="camera_lens_center_visual">
+        <visual name="visual_lens_center">
           <pose>0 0 1.75 0 0 0</pose>
           <cast_shadows>false</cast_shadows>
           <geometry>
@@ -316,7 +316,7 @@
 
         <!-- SENSOR DE LUMINOSIDADE (CÂMERA NO FOCO) -->
         <!-- Foco = 1.8m. Câmera olhando para baixo (pitch 90 graus) -->
-        <sensor name="focus_camera" type="camera">
+        <sensor name="sensor_focus_camera" type="camera">
           <pose>0 0 1.8 0 1.5708 0</pose>
           <always_on>true</always_on>
           <update_rate>10</update_rate>
@@ -338,7 +338,7 @@
       </link>
 
       <!-- NOVO LINK: PLACA RASTREADORA -->
-      <link name="link_tracker">
+      <link name="link_tracker_plate">
         <!-- POSIÇÃO INICIAL DA PLACA EM RELAÇÃO AO FRAME DO three_link_model.
              O que importa é a pose da joint fixa em relação ao link3 abaixo.
              Aqui pode deixar 0 0 0. -->
@@ -353,7 +353,7 @@
         </inertial>
 
         <!-- Placa: centro do link_tracker é o centro da placa -->
-        <visual name="tracker_plate_visual">
+        <visual name="visual_plate_base">
           <pose>0 0 0 0 0 0</pose>
           <geometry>
             <box>
@@ -368,7 +368,7 @@
         </visual>
 
         <!-- Disco opaco central (raio 4.75cm, espessura 0.5cm) -->
-        <visual name="tracker_opaque_disk_visual">
+        <visual name="visual_disk_opaque">
           <pose>0 0 0.105 0 0 0</pose>
           <geometry>
             <cylinder>
@@ -384,7 +384,7 @@
         </visual>
 
         <!-- Colisão do disco opaco -->
-        <collision name="tracker_opaque_disk_collision">
+        <collision name="collision_disk_opaque">
           <pose>0 0 0.005 0 0 0</pose>
           <geometry>
             <cylinder>
@@ -395,7 +395,7 @@
         </collision>
 
         <!-- Anteparo eixo X (Y=0) -->
-        <visual name="tracker_wall_x_visual">
+        <visual name="visual_wall_x_axis">
           <pose>0 0 0.05 0 0 0</pose>
           <geometry>
             <box>
@@ -409,7 +409,7 @@
         </visual>
 
         <!-- Anteparo eixo Y (X=0) -->
-        <visual name="tracker_wall_y_visual">
+        <visual name="visual_wall_y_axis">
           <pose>0 0 0.05 0 0 0</pose>
           <geometry>
             <box>
@@ -425,7 +425,7 @@
         <!-- Câmeras - centradas no link_tracker (olhando para +Z, rotação 0 -1.5708 -1.5708) -->
 
         <!-- Q1: (+0.05,+0.05) - Vermelho -->
-        <sensor name="cam_q1" type="camera">
+        <sensor name="sensor_quadrant_1" type="camera">
           <pose>0.05 0.05 0.003 0 -1.5708 -1.5708</pose>
           <always_on>true</always_on>
           <update_rate>10</update_rate>
@@ -444,7 +444,7 @@
             </clip>
           </camera>
         </sensor>
-        <visual name="cam_q1_marker">
+        <visual name="visual_marker_q1_red">
           <pose>0.05 0.05 0.008 0 0 0</pose>
           <geometry>
             <sphere><radius>0.007</radius></sphere>
@@ -456,7 +456,7 @@
         </visual>
 
         <!-- Q2: (-0.05,+0.05) - Verde -->
-        <sensor name="cam_q2" type="camera">
+        <sensor name="sensor_quadrant_2" type="camera">
           <pose>-0.05 0.05 0.003 0 -1.5708 -1.5708</pose>
           <always_on>true</always_on>
           <update_rate>10</update_rate>
@@ -475,7 +475,7 @@
             </clip>
           </camera>
         </sensor>
-        <visual name="cam_q2_marker">
+        <visual name="visual_marker_q2_green">
           <pose>-0.05 0.05 0.008 0 0 0</pose>
           <geometry>
             <sphere><radius>0.007</radius></sphere>
@@ -487,7 +487,7 @@
         </visual>
 
         <!-- Q3: (-0.05,-0.05) - Azul -->
-        <sensor name="cam_q3" type="camera">
+        <sensor name="sensor_quadrant_3" type="camera">
           <pose>-0.05 -0.05 0.003 0 -1.5708 -1.5708</pose>
           <always_on>true</always_on>
           <update_rate>10</update_rate>
@@ -506,7 +506,7 @@
             </clip>
           </camera>
         </sensor>
-        <visual name="cam_q3_marker">
+        <visual name="visual_marker_q3_blue">
           <pose>-0.05 -0.05 0.008 0 0 0</pose>
           <geometry>
             <sphere><radius>0.007</radius></sphere>
@@ -518,7 +518,7 @@
         </visual>
 
         <!-- Q4: (+0.05,-0.05) - Amarelo -->
-        <sensor name="cam_q4" type="camera">
+        <sensor name="sensor_quadrant_4" type="camera">
           <pose>0.05 -0.05 0.003 0 -1.5708 -1.5708</pose>
           <always_on>true</always_on>
           <update_rate>10</update_rate>
@@ -537,7 +537,7 @@
             </clip>
           </camera>
         </sensor>
-        <visual name="cam_q4_marker">
+        <visual name="visual_marker_q4_yellow">
           <pose>0.05 -0.05 0.008 0 0 0</pose>
           <geometry>
             <sphere><radius>0.007</radius></sphere>
@@ -547,17 +547,99 @@
             <diffuse>1 1 0 1</diffuse>
           </material>
         </visual>
+
+        <!-- ============================================== -->
+        <!-- SENSOR DE TUBO FINO (Sun Sensor)               -->
+        <!-- Câmera no fundo (z=0.105), Tubo 5cm acima     -->
+        <!-- Diâmetro interno 1.0cm (Aproximado por octógono) -->
+        <!-- ============================================== -->
+        
+        <!-- Câmera no fundo do tubo, olhando para +Z (0 -1.57 -1.57) -->
+        <!-- Movida para Z=0.108 para sair de dentro do disco opaco (que vai até 0.1075) -->
+        <sensor name="sensor_sun_tube" type="camera">
+          <pose>0 0 0.108 0 -1.5708 -1.5708</pose>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>plate/sun_sensor/image</topic>
+          <camera>
+            <horizontal_fov>0.35</horizontal_fov> <!-- FOV aprox 20 graus para ver o tubo -->
+            <image>
+              <width>64</width>
+              <height>64</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.001</near>
+              <far>5.0</far>
+            </clip>
+          </camera>
+        </sensor>
+
+        <!-- PAREDES DO TUBO (Preto Fosco - Cilindro Oco aproximado por 8 segmentos) -->
+        <!-- Altura Z total 5cm -->
+        <!-- Base do tubo no topo do disco (0.1075). Centro Z = 0.1075 + 0.025 = 0.1325 -->
+        <!-- Raio interno ~0.5cm (Diametro 1cm) -->
+        
+        <!-- Segmento 1 (0 graus) -->
+        <visual name="visual_tube_segment_1">
+          <pose>0.005 0 0.1325 0 0 0</pose>
+          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <!-- Segmento 2 (45 graus) -->
+        <visual name="visual_tube_segment_2">
+          <pose>0.00354 0.00354 0.1325 0 0 0.7854</pose>
+          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <!-- Segmento 3 (90 graus) -->
+        <visual name="visual_tube_segment_3">
+          <pose>0 0.005 0.1325 0 0 1.5708</pose>
+          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <!-- Segmento 4 (135 graus) -->
+        <visual name="visual_tube_segment_4">
+          <pose>-0.00354 0.00354 0.1325 0 0 2.3562</pose>
+          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <!-- Segmento 5 (180 graus) -->
+        <visual name="visual_tube_segment_5">
+          <pose>-0.005 0 0.1325 0 0 3.1416</pose>
+          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <!-- Segmento 6 (225 graus) -->
+        <visual name="visual_tube_segment_6">
+          <pose>-0.00354 -0.00354 0.1325 0 0 3.9270</pose>
+          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <!-- Segmento 7 (270 graus) -->
+        <visual name="visual_tube_segment_7">
+          <pose>0 -0.005 0.1325 0 0 4.7124</pose>
+          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
+        <!-- Segmento 8 (315 graus) -->
+        <visual name="visual_tube_segment_8">
+          <pose>0.00354 -0.00354 0.1325 0 0 5.4978</pose>
+          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
+          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
+        </visual>
       </link>
 
       <!-- JOINTS EXISTENTES -->
-      <joint name="world_to_link1" type="fixed">
+      <joint name="joint_base_fixed" type="fixed">
         <parent>world</parent>
-        <child>link1</child>
+        <child>link_base</child>
       </joint>
 
-      <joint name="joint1" type="revolute">
-        <parent>link1</parent>
-        <child>link2</child>
+      <joint name="joint_azimuth" type="revolute">
+        <parent>link_base</parent>
+        <child>link_tower</child>
         <axis>
           <xyz>0 0 1</xyz>
           <limit>
@@ -581,9 +663,9 @@
         </sensor>
       </joint>
 
-      <joint name="joint2" type="revolute">
-        <parent>link2</parent>
-        <child>link3</child>
+      <joint name="joint_elevation" type="revolute">
+        <parent>link_tower</parent>
+        <child>link_arm</child>
         <pose>-0.07 -0.1725 2.0384 0 0 0</pose>
         <axis>
           <xyz>0 1 0</xyz>
@@ -611,19 +693,19 @@
 
 
       <!-- NOVA JOINT FIXA: link3 -> link_tracker -->
-      <joint name="tracker_fixed_joint" type="fixed">
-        <parent>link3</parent>
-        <child>link_tracker</child>
+      <joint name="joint_tracker_fixed" type="fixed">
+        <parent>link_arm</parent>
+        <child>link_tracker_plate</child>
         <!-- Pose da placa em relação ao FRAME DO LINK3 -->
         <!-- Ajuste aqui para reposicionar a placa onde quiser no braço -->
         <pose>0 0 2.5 0 0 0</pose>
       </joint>
 
       <!-- NOVA JOINT FIXA: link3 -> link_parabolic_dish -->
-      <joint name="parabolic_dish_fixed_joint" type="fixed">
-        <parent>link3</parent>
-        <child>link_parabolic_dish</child>
-        <!-- A pose da joint é relativa ao frame do filho (link_parabolic_dish).
+      <joint name="joint_dish_fixed" type="fixed">
+        <parent>link_arm</parent>
+        <child>link_dish</child>
+        <!-- A pose da joint é relativa ao frame do filho (link_dish).
              Como já posicionamos o link corretamente no modelo, a pose da joint pode ser zero. -->
         <pose>0 0 0 0 0 0</pose>
       </joint>
@@ -631,14 +713,14 @@
       <!-- PLUGINS DE JOINT STATE E CONTROLADORES -->
       <plugin filename="gz-sim-joint-state-publisher-system"
               name="gz::sim::systems::JointStatePublisher">
-        <joint_name>joint1</joint_name>
-        <joint_name>joint2</joint_name>
+        <joint_name>joint_azimuth</joint_name>
+        <joint_name>joint_elevation</joint_name>
       </plugin>
 
       <plugin filename="gz-sim-joint-position-controller-system"
               name="gz::sim::systems::JointPositionController">
-        <joint_name>joint1</joint_name>
-        <topic>/model/three_link_model/joint/joint1/cmd_pos</topic>
+        <joint_name>joint_azimuth</joint_name>
+        <topic>/model/three_link_model/joint/joint_azimuth/cmd_pos</topic>
         <p_gain>1000</p_gain>
         <i_gain>100</i_gain>
         <d_gain>3000</d_gain>
@@ -648,11 +730,11 @@
 
       <plugin filename="gz-sim-joint-position-controller-system"
               name="gz::sim::systems::JointPositionController">
-        <joint_name>joint2</joint_name>
-        <topic>/model/three_link_model/joint/joint2/cmd_pos</topic>
+        <joint_name>joint_elevation</joint_name>
+        <topic>/model/three_link_model/joint/joint_elevation/cmd_pos</topic>
         <p_gain>4000</p_gain>
         <i_gain>5000</i_gain>
-        <d_gain>6000</d_gain>
+        <d_gain>4000</d_gain>
         <i_min>-10000</i_min>
         <i_max>10000</i_max>
       </plugin>
