@@ -925,6 +925,7 @@
             <friction>0.0</friction>
           </dynamics>
         </axis>
+
       </joint>
 
       <joint name="joint_cylinder_green" type="revolute">
@@ -943,6 +944,7 @@
             <friction>0.0</friction>
           </dynamics>
         </axis>
+
       </joint>
 
 
