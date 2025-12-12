@@ -1,134 +1,104 @@
-# 📊 Tabela Resumida - Nomenclatura do Robô
+# � Tabela de Nomenclatura Padronizada (v2.1.0)
 
-## 🎯 Comparação Rápida das 3 Opções
-
----
-
-## 🔗 LINKS PRINCIPAIS
-
-| Atual | Opção 1 (PT-BR) | Opção 2 (EN) | Opção 3 (Híbrida) ⭐ | Função |
-|-------|-----------------|--------------|---------------------|---------|
-| `link1` | `base_fixa` | `base_platform` | `link_base` | Base do sistema |
-| `link2` | `torre_vertical` | `vertical_tower` | `link_tower` | Torre vertical |
-| `link3` | `braco_horizontal` | `horizontal_arm` | `link_arm` | Braço horizontal |
-| `link_tracker` | `placa_rastreadora` | `tracker_plate` | `link_tracker_plate` | Placa com sensores |
-| `link_parabolic_dish` | `prato_parabolico` | `parabolic_dish` | `link_dish` | Prato parabólico |
+Esta tabela documenta **todos** os nomes de elementos utilizados no projeto `robotSim4`, incluindo as adições recentes.
 
 ---
 
-## 🔧 JUNTAS (JOINTS)
+## 🏗️ Estrutura Mecânica (Links e Joints)
 
-| Atual | Opção 1 (PT-BR) | Opção 2 (EN) | Opção 3 (Híbrida) ⭐ | Função |
-|-------|-----------------|--------------|---------------------|---------|
-| `world_to_link1` | `fixacao_base_mundo` | `base_to_world` | `joint_base_fixed` | Fixa base ao mundo |
-| `joint1` | `junta_azimutal` | `azimuth_joint` | `joint_azimuth` | Rotação Z (azimute) |
-| `joint2` | `junta_elevacao` | `elevation_joint` | `joint_elevation` | Rotação Y (elevação) |
-| `tracker_fixed_joint` | `fixacao_placa` | `tracker_attachment` | `joint_tracker_fixed` | Fixa placa ao braço |
-| `parabolic_dish_fixed_joint` | `fixacao_prato` | `dish_attachment` | `joint_dish_fixed` | Fixa prato ao braço |
-
----
-
-## 📷 SENSORES DA PLACA RASTREADORA
-
-| Atual | Sugestão Alternativa 1 | Sugestão Alternativa 2 | Cor | Posição |
-|-------|------------------------|------------------------|-----|---------|
-| `cam_q1` | `sensor_quadrant_1` | `cam_q1_red` | 🔴 Vermelho | (+X, +Y) |
-| `cam_q2` | `sensor_quadrant_2` | `cam_q2_green` | 🟢 Verde | (-X, +Y) |
-| `cam_q3` | `sensor_quadrant_3` | `cam_q3_blue` | 🔵 Azul | (-X, -Y) |
-| `cam_q4` | `sensor_quadrant_4` | `cam_q4_yellow` | 🟡 Amarelo | (+X, -Y) |
-| `sun_sensor_tube` | `sensor_sun_tube` | `cam_sun_tube` | ⚫ Preto | Centro (0, 0) |
+| Tipo | Nome Atual | Descrição | Pai | Filho | Eixo |
+|------|------------|-----------|-----|-------|------|
+| **Link** | `link_base` | Base fixa do robô | - | - | - |
+| **Link** | `link_tower` | Torre vertical principal | - | - | - |
+| **Link** | `link_arm` | Braço horizontal | - | - | - |
+| **Link** | `link_tracker_plate` | Placa rastreadora quadrangular | - | - | - |
+| **Link** | `link_dish` | Prato parabólico refletor | - | - | - |
+| **Link** | `link_cylinder` | **(NOVO)** Cilindro rotativo vermelho | - | - | - |
+| **Joint** | `joint_base_fixed` | Fixa a base ao mundo | World | link_base | - |
+| **Joint** | `joint_azimuth` | Rotação azimutal da torre | link_base | link_tower | Z |
+| **Joint** | `joint_elevation` | Rotação de elevação do braço | link_tower | link_arm | Y |
+| **Joint** | `joint_tracker_fixed` | Fixa a placa ao braço | link_arm | link_tracker_plate | - |
+| **Joint** | `joint_dish_fixed` | Fixa o prato ao braço | link_arm | link_dish | - |
+| **Joint** | `joint_cylinder` | **(NOVO)** Rotação do cilindro | link_tower | link_cylinder | Z |
 
 ---
 
-## 🎨 ELEMENTOS VISUAIS - PLACA RASTREADORA
+## 👁️ Sensores e Câmeras
 
-| Atual | Sugerido | Descrição |
-|-------|----------|-----------|
-| `tracker_plate_visual` | `visual_plate_base` | Base da placa (20x20cm) |
-| `tracker_opaque_disk_visual` | `visual_disk_opaque` | Disco opaco central (Ø9.5cm) |
-| `tracker_wall_x_visual` | `visual_wall_x_axis` | Anteparo no eixo X |
-| `tracker_wall_y_visual` | `visual_wall_y_axis` | Anteparo no eixo Y |
-| `tracker_support_rod_visual` | `visual_support_rod` | Aste de fixação (Ø3cm, 30cm) |
-| `tube_seg_1` ... `tube_seg_8` | `visual_tube_segment_1` ... `_8` | Segmentos do tubo solar |
-| `cam_q1_marker` | `visual_marker_q1_red` | Marcador visual Q1 |
-| `cam_q2_marker` | `visual_marker_q2_green` | Marcador visual Q2 |
-| `cam_q3_marker` | `visual_marker_q3_blue` | Marcador visual Q3 |
-| `cam_q4_marker` | `visual_marker_q4_yellow` | Marcador visual Q4 |
+| Nome Atual | Tipo | Localização | Tópico Gazebo Transport |
+|------------|------|-------------|-------------------------|
+| `sensor_quadrant_1` | Camera | Placa (Q1 Vermelho) | `/plate/sensor_quadrant_1/image` |
+| `sensor_quadrant_2` | Camera | Placa (Q2 Verde) | `/plate/sensor_quadrant_2/image` |
+| `sensor_quadrant_3` | Camera | Placa (Q3 Azul) | `/plate/sensor_quadrant_3/image` |
+| `sensor_quadrant_4` | Camera | Placa (Q4 Amarelo) | `/plate/sensor_quadrant_4/image` |
+| `sensor_sun_tube` | Camera | Placa (Centro - Tubo) | `/plate/sensor_sun_tube/image` |
+| `sensor_focus_camera` | Camera | Foco do Prato | `/parabolic_dish/sensor_focus_camera/image` |
+| `joint1_force_torque` | Force/Torque | joint_azimuth | `/model/three_link_model/joint/joint_azimuth/force_torque` |
+| `joint2_force_torque` | Force/Torque | joint_elevation | `/model/three_link_model/joint/joint_elevation/force_torque` |
 
 ---
 
-## 🛰️ ELEMENTOS DO PRATO PARABÓLICO
+## 🎨 Elementos Visuais e de Colisão
 
-| Atual | Sugerido | Descrição |
-|-------|----------|-----------|
-| `parabolic_dish_visual` | `visual_dish_reflector` | Superfície refletora parabólica |
-| `parabolic_dish_collision` | `collision_dish` | Colisão do prato |
-| `feed_support_rod_visual` | `visual_feed_support` | Haste de suporte (1.8m) |
-| `feed_sensor_housing_visual` | `visual_sensor_housing` | Caixa do sensor focal |
-| `camera_filter_visual` | `visual_filter_dark` | Filtro escuro (óculos de sol) |
-| `camera_lens_center_visual` | `visual_lens_center` | Lente central transparente |
-| `focus_camera` | `sensor_focus_camera` | Câmera no foco (1.8m) |
+### Link Base
+- `visual_base_structure`
+- `collision_base`
 
----
+### Link Tower
+- `visual_tower_structure`
+- `collision_tower`
 
-## 🏗️ ELEMENTOS DO BRAÇO (link3)
+### Link Arm
+- `visual_arm_structure`
+- `collision_arm`
+- `visual_support_rod` (Haste de suporte da placa)
+- `collision_support_rod`
 
-| Atual | Sugerido | Descrição |
-|-------|----------|-----------|
-| `link3_visual` | `visual_arm_structure` | Estrutura do braço H |
-| `link3_collision` | `collision_arm` | Colisão do braço |
+### Link Tracker Plate
+- `visual_plate_base`
+- `collision_plate_base`
+- `visual_disk_opaque` (Disco opaco central)
+- `collision_disk_opaque`
+- `visual_wall_x_axis` (Parede separadora X)
+- `visual_wall_y_axis` (Parede separadora Y)
+- `visual_marker_q1_red` ... `_q4_yellow` (Marcadores coloridos)
+- `visual_tube_segment_1` ... `_8` (Segmentos do tubo solar)
 
----
+### Link Dish
+- `visual_dish_reflector`
+- `collision_dish`
+- `visual_feed_support` (Haste do foco)
+- `visual_sensor_housing` (Caixa do sensor)
+- `visual_filter_dark` (Filtro escuro)
+- `visual_lens_center` (Lente)
 
-## 📐 DIMENSÕES IMPORTANTES
-
-| Componente | Dimensão | Observação |
-|------------|----------|------------|
-| Base (link1) | 20x20x20 cm | Cubo |
-| Torre (link2) | 40x40x100 cm | Prisma vertical |
-| Braço (link3) | 50x30x80 cm | Braço H |
-| Placa rastreadora | 20x20x0.5 cm | Placa fina |
-| Disco opaco | Ø9.5cm x 0.5cm | Centro da placa |
-| Tubo solar | Ø1cm x 5cm | Cilindro oco (8 segmentos) |
-| Prato parabólico | Ø3m, foco 1.8m | Malha STL |
-| Aste suporte placa | Ø3cm x 30cm | Cilindro |
-| Aste suporte sensor | Ø4cm x 180cm | Cilindro |
-
----
-
-## 🎯 RECOMENDAÇÃO
-
-### ⭐ **Opção 3 (Nomenclatura Híbrida)** é a mais recomendada:
-
-**Vantagens:**
-- ✅ Mantém prefixos padronizados (`link_`, `joint_`, `sensor_`, `visual_`)
-- ✅ Nomes em inglês (padrão internacional)
-- ✅ Descritiva e clara
-- ✅ Compatível com ROS/Gazebo
-- ✅ Fácil de manter e expandir
-
-**Mudanças Necessárias nos Códigos Python:**
-
-1. `02_unified_control_gui.py` - Atualizar referências a links e juntas
-2. `03_light_sensor_gui.py` - Atualizar referências a links
-3. `plate_light_gui_images.py` - Atualizar tópicos de câmeras (se necessário)
-4. `tracker_auto_control_gui.py` - Atualizar comandos de juntas
-5. `05_balls_control_gui.py` - Verificar referências
+### Link Cylinder (Novo)
+- `visual_cylinder` (Cilindro vermelho)
+- `collision_cylinder`
 
 ---
 
-## 📋 CHECKLIST DE ALTERAÇÕES
+## 🎮 Tópicos de Controle
 
-Após escolher a nomenclatura:
-
-- [ ] Atualizar arquivo SDF
-- [ ] Atualizar scripts Python
-- [ ] Atualizar README.md
-- [ ] Testar simulação no Gazebo
-- [ ] Testar todas as GUIs
-- [ ] Atualizar documentação técnica
-- [ ] Fazer commit das alterações
+| Junta | Tópico de Comando | Tipo de Mensagem |
+|-------|-------------------|------------------|
+| **Azimute** | `/model/three_link_model/joint/joint_azimuth/cmd_pos` | `gz.msgs.Double` (Posição rad) |
+| **Elevação** | `/model/three_link_model/joint/joint_elevation/cmd_pos` | `gz.msgs.Double` (Posição rad) |
+| **Cilindro** | `/model/three_link_model/joint/joint_cylinder/cmd_force` | `gz.msgs.Double` (Torque N⋅m) |
 
 ---
 
-**Status:** 🟡 Aguardando aprovação para implementar as mudanças
+## 📁 Arquivos de Malhas 3D (Models)
+
+| Caminho Relativo | Descrição | Tamanho aprox. |
+|------------------|-----------|----------------|
+| `models/catia/1_Base.dae` | Base do robô | 800 KB |
+| `models/catia/2_Torre.dae` | Torre vertical (LFS) | 123 MB |
+| `models/catia/3_BracoH.dae` | Braço horizontal | 2.6 MB |
+| `formas/parabolic_dish.stl` | Prato parabólico (LFS) | 18 MB |
+| `formas/Espelho.dae` | Alternativa para prato | 2.4 MB |
+| `lens_mask.obj` | Máscara da lente | 4.7 KB |
+
+---
+
+**Última atualização:** 11/12/2025 - Adicionado Link Cylinder

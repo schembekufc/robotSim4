@@ -69,6 +69,7 @@
     <!-- MODELO DO ROBÔ COM 3 LINKS + LINK DA PLACA -->
     <model name="three_link_model">
       <pose>0 0 0 0 0 0</pose>
+      <self_collide>true</self_collide> <!-- IMPORTANTE: Habilita colisão entre links do mesmo robô -->
       <static>false</static>
 
       <!-- LINK BASE -->
@@ -336,6 +337,207 @@
           </camera>
         </sensor>
       </link>
+
+      <!-- NOVO LINK CILÍNDRICO (Pedido pelo usuário) -->
+      <link name="link_cylinder">
+        <pose>0 0 1.503 0 0 0</pose> <!-- Desceu 8cm (1.583 - 0.08) -->
+        <inertial>
+          <mass>2.5</mass>
+          <inertia>
+            <ixx>0.012</ixx><iyy>0.012</iyy><izz>0.020</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <visual name="visual_cylinder">
+          <geometry>
+            <cylinder>
+              <radius>0.125</radius>
+              <length>0.1</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1 0 0 1</ambient> <!-- Vermelho -->
+            <diffuse>1 0 0 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+        <!-- Faixa Branca para Visualizar Rotação -->
+        <visual name="visual_stripe">
+          <pose>0.1 0 0 0 0 0</pose> <!-- Posicionado na borda do cilindro -->
+          <geometry>
+            <box>
+              <size>0.1 0.05 0.102</size> <!-- Ligeiramente mais alto que o cilindro -->
+            </box>
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse> <!-- Branco -->
+          </material>
+        </visual>
+      </link>
+
+      <!-- NOVO LINK CILÍNDRICO VERDE (No eixo de giro do braço) -->
+      <link name="link_cylinder_green">
+        <!-- Pose deslocada +1m em Y relação à joint_elevation (-0.1725 + 1.0) -->
+        <pose>-0.07 0.8275 2.0384 1.5708 0 0</pose>
+        <inertial>
+          <mass>2.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><iyy>0.01</iyy><izz>0.01</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <visual name="visual_cylinder_green">
+          <geometry>
+            <cylinder>
+              <radius>0.1</radius>
+              <length>0.1</length> <!-- Comprimento reduzido para 10cm -->
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0 1 0 1</ambient> <!-- Verde -->
+            <diffuse>0 1 0 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+        <!-- Faixa Branca para Visualizar Rotação -->
+        <visual name="visual_stripe_green">
+          <pose>0.08 0 0 0 0 0</pose> 
+          <geometry>
+            <box><size>0.05 0.05 0.11</size></box> <!-- Ajustado para cilindro de 10cm -->
+          </geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse>
+          </material>
+        </visual>
+      </link>
+
+
+
+      <!-- BRAÇO LARANJA (Barra Fixa no Vermelho) -->
+      <link name="link_orange_arm">
+        <pose>0 0 1.503 0 0 0</pose> 
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><iyy>0.01</iyy><izz>0.01</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <visual name="vis_orange_bar_y">
+          <!-- Centro em Y=0.39 (Length=0.78) -->
+          <pose>0 0.39 0 1.5708 0 0</pose> 
+          <geometry><cylinder><radius>0.02</radius><length>0.78</length></cylinder></geometry>
+          <material><ambient>1 0.5 0 1</ambient><diffuse>1 0.5 0 1</diffuse></material> 
+        </visual>
+        <!-- Sem colisão na barra principal para evitar bugs -->
+
+        <!-- RECEPTÁCULO REFORÇADO (Paredes 5cm) -->
+        <!-- Furo 4.0cm (pino 4.0cm) -->
+        <!-- Centro X=-0.07, Y=0.8275 -->
+        <!-- Offset parede 5cm = 0.02(furo/2) + 0.025(parede/2) = 0.045 -->
+        
+        <!-- Propriedades de Superfície (Rigidez) -->
+        <!-- Repetir dentro de cada collision se necessário, ou usar preset -->
+        
+        <!-- Parede X+ (Super Reforçada: 15cm) -->
+        <collision name="col_ring_xp">
+          <pose>-0.025 0.8275 0 0 0 0</pose> <!-- Centro mantido, cresce para fora? Não, centro precisa ajustar se size cresce -->
+          <!-- Se furo termina em -0.05, e parede tem 15cm, centro da parede = -0.05 + 0.075 = +0.025 -->
+          <!-- Centro Furo: -0.07. Raio Furo 2cm. Borda Furo em -0.05. -->
+          <!-- Parede X+ começa em -0.05 e vai até +0.10. Centro = 0.025 -->
+          <pose>0.025 0.8275 0 0 0 0</pose> 
+          <geometry><box><size>0.15 0.14 0.3</size></box></geometry>
+          <surface>
+            <contact>
+              <ode>
+                <kp>1e14</kp> <!-- Rigidez Extrema++ -->
+                <kd>100.0</kd> <!-- Damping aumentado para estabilidade -->
+                <max_vel>0.01</max_vel>
+                <min_depth>0.01</min_depth> <!-- Profundidade mínima aumentada -->
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="vis_ring_xp">
+          <pose>0.025 0.8275 0 0 0 0</pose>
+          <geometry><box><size>0.15 0.14 0.3</size></box></geometry>
+          <material><ambient>1 0.5 0 1</ambient><diffuse>1 0.5 0 1</diffuse></material>
+        </visual>
+
+        <!-- Parede X- (Super Reforçada: 15cm) -->
+        <!-- Borda Furo em -0.09. Parede vai de -0.24 até -0.09. Centro = -0.165 -->
+        <collision name="col_ring_xm">
+          <pose>-0.165 0.8275 0 0 0 0</pose>
+          <geometry><box><size>0.15 0.14 0.3</size></box></geometry>
+          <surface><contact><ode><kp>1e14</kp><kd>100.0</kd><max_vel>0.01</max_vel><min_depth>0.01</min_depth></ode></contact></surface>
+        </collision>
+        <visual name="vis_ring_xm">
+          <pose>-0.165 0.8275 0 0 0 0</pose>
+          <geometry><box><size>0.15 0.14 0.3</size></box></geometry>
+          <material><ambient>1 0.5 0 1</ambient><diffuse>1 0.5 0 1</diffuse></material>
+        </visual>
+
+        <!-- Parede Y+ (Reforçada 5cm mantida mas ajustada para cobrir X) -->
+        <collision name="col_ring_yp">
+          <pose>-0.07 0.8725 0 0 0 0</pose>
+          <geometry><box><size>0.04 0.05 0.3</size></box></geometry>
+          <surface><contact><ode><kp>1e14</kp><kd>100.0</kd><min_depth>0.01</min_depth></ode></contact></surface>
+        </collision>
+        <visual name="vis_ring_yp">
+          <pose>-0.07 0.8725 0 0 0 0</pose>
+          <geometry><box><size>0.04 0.05 0.3</size></box></geometry>
+          <material><ambient>1 0.5 0 1</ambient><diffuse>1 0.5 0 1</diffuse></material>
+        </visual>
+
+        <!-- Parede Y- -->
+        <collision name="col_ring_ym">
+          <pose>-0.07 0.7825 0 0 0 0</pose>
+          <geometry><box><size>0.04 0.05 0.3</size></box></geometry>
+          <surface><contact><ode><kp>1e14</kp><kd>100.0</kd><min_depth>0.01</min_depth></ode></contact></surface>
+        </collision>
+        <visual name="vis_ring_ym">
+          <pose>-0.07 0.7825 0 0 0 0</pose>
+          <geometry><box><size>0.04 0.05 0.3</size></box></geometry>
+          <material><ambient>1 0.5 0 1</ambient><diffuse>1 0.5 0 1</diffuse></material>
+        </visual>
+
+      </link>
+
+      <!-- BRAÇO LARANJA DESCENDENTE (Sai do Verde) -->
+      <link name="link_orange_arm_descending">
+        <!-- Pose inicial: Coincide com o Verde (-0.07 0.8275 2.0384) -->
+        <!-- Mas cuidado: A orientação do verde é girada. Vou posicionar o link no MUNDO e conectar. -->
+        <pose>-0.07 0.8275 2.0384 0 0 0</pose> 
+        <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.01</ixx><iyy>0.01</iyy><izz>0.01</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        <visual name="vis_orange_bar_z">
+          <!-- Centro da barra em Z=-0.5 (metade de 1m) -->
+          <pose>0 0 -0.5 0 0 0</pose> 
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>1.0</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1 0.5 0 1</ambient>
+            <diffuse>1 0.5 0 1</diffuse>
+          </material> 
+        </visual>
+        <!-- COLISÃO DA BARRA VERTICAL (Para interagir com o anel) -->
+        <collision name="col_orange_bar_z">
+           <pose>0 0 -0.5 0 0 0</pose> 
+           <geometry><cylinder><radius>0.02</radius><length>1.0</length></cylinder></geometry>
+        </collision>
+      </link>
+
+      <!-- Link Esfera Amarela foi removido -->
 
       <!-- NOVO LINK: PLACA RASTREADORA -->
       <link name="link_tracker_plate">
@@ -632,10 +834,24 @@
       </link>
 
       <!-- JOINTS EXISTENTES -->
+      <joint name="joint_red_orange" type="fixed">
+        <parent>link_cylinder</parent>
+        <child>link_orange_arm</child>
+      </joint>
+
+
+      <joint name="joint_green_orange_desc" type="fixed">
+        <parent>link_cylinder_green</parent>
+        <child>link_orange_arm_descending</child>
+      </joint>
+
+
       <joint name="joint_base_fixed" type="fixed">
         <parent>world</parent>
         <child>link_base</child>
       </joint>
+
+
 
       <joint name="joint_azimuth" type="revolute">
         <parent>link_base</parent>
@@ -692,6 +908,45 @@
 
 
 
+      <joint name="joint_cylinder" type="revolute">
+        <parent>link_tower</parent>
+        <child>link_cylinder</child>
+        <pose>0 0 0 0 0 0</pose> <!-- Relativo ao filho (1.283), então pivô em Z=1.283 -->
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-1e16</lower>
+            <upper>1e16</upper>
+            <effort>10000</effort>
+            <velocity>1000</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.001</damping>
+            <friction>0.0</friction>
+          </dynamics>
+        </axis>
+      </joint>
+
+      <joint name="joint_cylinder_green" type="revolute">
+        <parent>link_arm</parent>
+        <child>link_cylinder_green</child>
+        <axis>
+          <xyz>0 0 1</xyz> <!-- Eixo Z local (alinha com Y global) -->
+          <limit>
+            <lower>-1e16</lower>
+            <upper>1e16</upper>
+            <effort>10000</effort>
+            <velocity>1000</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.001</damping>
+            <friction>0.0</friction>
+          </dynamics>
+        </axis>
+      </joint>
+
+
+
       <!-- NOVA JOINT FIXA: link3 -> link_tracker -->
       <joint name="joint_tracker_fixed" type="fixed">
         <parent>link_arm</parent>
@@ -715,6 +970,8 @@
               name="gz::sim::systems::JointStatePublisher">
         <joint_name>joint_azimuth</joint_name>
         <joint_name>joint_elevation</joint_name>
+        <joint_name>joint_cylinder</joint_name>
+        <joint_name>joint_cylinder_green</joint_name>
       </plugin>
 
       <plugin filename="gz-sim-joint-position-controller-system"
@@ -737,6 +994,17 @@
         <d_gain>4000</d_gain>
         <i_min>-10000</i_min>
         <i_max>10000</i_max>
+      </plugin>
+
+      <!-- Plugin de Controle de Torque para o Cilindro -->
+      <plugin filename="gz-sim-apply-joint-force-system"
+              name="gz::sim::systems::ApplyJointForce">
+        <joint_name>joint_cylinder</joint_name>
+      </plugin>
+
+      <plugin filename="gz-sim-apply-joint-force-system"
+              name="gz::sim::systems::ApplyJointForce">
+        <joint_name>joint_cylinder_green</joint_name>
       </plugin>
 
 
