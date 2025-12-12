@@ -340,7 +340,7 @@
 
       <!-- NOVO LINK CILÍNDRICO (Pedido pelo usuário) -->
       <link name="link_cylinder">
-        <pose>0 0 1.503 0 0 0</pose> <!-- Desceu 8cm (1.583 - 0.08) -->
+        <pose>0 0 1.253 0 0 0</pose> <!-- Desceu 25cm (1.503 - 0.25) -->
         <inertial>
           <mass>2.5</mass>
           <inertia>
@@ -351,7 +351,7 @@
         <visual name="visual_cylinder">
           <geometry>
             <cylinder>
-              <radius>0.125</radius>
+              <radius>0.175</radius>
               <length>0.1</length>
             </cylinder>
           </geometry>
@@ -416,7 +416,7 @@
 
       <!-- BRAÇO LARANJA (Barra Fixa no Vermelho) -->
       <link name="link_orange_arm">
-        <pose>0 0 1.503 0 0 0</pose> 
+        <pose>0 0 1.253 0 0 0</pose> 
         <inertial>
           <mass>1.0</mass>
           <inertia>
@@ -861,12 +861,12 @@
           <limit>
             <lower>-1e16</lower>
             <upper>1e16</upper>
-            <velocity>1</velocity>
+            <velocity>100</velocity>
             <effort>2000</effort>
           </limit>
           <dynamics>
-            <damping>0.1</damping>
-            <friction>0.0</friction>
+            <damping>10</damping>
+            <friction>1</friction>
           </dynamics>
         </axis>
         <sensor name="joint1_force_torque" type="force_torque">
@@ -888,7 +888,7 @@
           <limit>
             <lower>-1e16</lower>
             <upper>1e16</upper>
-            <velocity>10</velocity>
+            <velocity>100</velocity>
             <effort>200000</effort>
           </limit>
           <dynamics>
@@ -909,7 +909,7 @@
 
 
       <joint name="joint_cylinder" type="revolute">
-        <parent>link_tower</parent>
+        <parent>link_base</parent>
         <child>link_cylinder</child>
         <pose>0 0 0 0 0 0</pose> <!-- Relativo ao filho (1.283), então pivô em Z=1.283 -->
         <axis>
