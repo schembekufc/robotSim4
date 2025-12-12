@@ -363,7 +363,7 @@
         </visual>
         <!-- Faixa Branca para Visualizar Rotação -->
         <visual name="visual_stripe">
-          <pose>0.1 0 0 0 0 0</pose> <!-- Posicionado na borda do cilindro -->
+          <pose>0.16 0 0 0 0 0</pose> <!-- Posicionado na borda do cilindro (raio 0.175) -->
           <geometry>
             <box>
               <size>0.1 0.05 0.102</size> <!-- Ligeiramente mais alto que o cilindro -->
@@ -911,7 +911,7 @@
       <joint name="joint_cylinder" type="revolute">
         <parent>link_base</parent>
         <child>link_cylinder</child>
-        <pose>0 0 0 0 0 0</pose> <!-- Relativo ao filho (1.283), então pivô em Z=1.283 -->
+        <pose>0 0 0 0 0 0</pose> <!-- Relativo ao filho, pivô no centro do link -->
         <axis>
           <xyz>0 0 1</xyz>
           <limit>
