@@ -31,3 +31,6 @@ Thumbs.db
 *.backup
 *_original.*
 *_temp.*
+
+# Data logs
+*.csv

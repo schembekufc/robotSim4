@@ -76,11 +76,19 @@
       <link name="link_base">
         <pose>0 0 0 0 0 0</pose>
         <inertial>
-          <mass>2.0</mass>
+          <!-- Parâmetros físicos atualizados -->
+          <!-- Massa: 2355.802 g -> 2.355802 kg -->
+          <mass>2.355802</mass>
           <inertia>
-            <ixx>0.01</ixx><iyy>0.01</iyy><izz>0.01</izz>
-            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+            <ixx>0.000460</ixx>
+            <iyy>0.001690</iyy>
+            <izz>0.001469</izz>
+            <ixy>-0.000000041</ixy>
+            <ixz>0.0</ixz>
+            <iyz>0.0</iyz>
           </inertia>
+          <!-- Pose: 280.414mm ... -> Metros -->
+          <pose>0.280414 -1.247e-10 0.511748 0 0 0</pose>
         </inertial>
         <collision name="collision_base">
           <geometry>
@@ -200,7 +208,8 @@
       <!-- ========================================== -->
       <link name="link_dish">
         <!-- Pose inicial do link (será ajustada pela joint) -->
-        <pose>-0.07 2.143 2.043 0 0 0</pose>
+        <!-- Pose ajustada para tangência calculada: Z_arm_top (2.042) + Z_dish_bottom_offset (0.01) = 2.052 -->
+        <pose>-0.07 2.143 2.052 0 0 0</pose>
         
         <!-- Propriedades físicas: Resina e Fibra de Vidro -->
         <!-- Densidade: 1900 kg/m³ -->
@@ -428,7 +437,7 @@
           <!-- Centro em Y=0.39 (Length=0.78) -->
           <pose>0 0.39 0 1.5708 0 0</pose> 
           <geometry><cylinder><radius>0.02</radius><length>0.78</length></cylinder></geometry>
-          <material><ambient>1 0.5 0 1</ambient><diffuse>1 0.5 0 1</diffuse></material> 
+          <material><ambient>0.5 0 0.5 1</ambient><diffuse>0.5 0 0.5 1</diffuse></material> 
         </visual>
         <!-- Sem colisão na barra principal para evitar bugs -->
 
@@ -526,8 +535,8 @@
             </cylinder>
           </geometry>
           <material>
-            <ambient>1 0.5 0 1</ambient>
-            <diffuse>1 0.5 0 1</diffuse>
+            <ambient>0.5 0 0.5 1</ambient>
+            <diffuse>0.5 0 0.5 1</diffuse>
           </material> 
         </visual>
         <!-- COLISÃO DA BARRA VERTICAL (Para interagir com o anel) -->
@@ -750,87 +759,7 @@
           </material>
         </visual>
 
-        <!-- ============================================== -->
-        <!-- SENSOR DE TUBO FINO (Sun Sensor)               -->
-        <!-- Câmera no fundo (z=0.105), Tubo 5cm acima     -->
-        <!-- Diâmetro interno 1.0cm (Aproximado por octógono) -->
-        <!-- ============================================== -->
-        
-        <!-- Câmera no fundo do tubo, olhando para +Z (0 -1.57 -1.57) -->
-        <!-- Movida para Z=0.108 para sair de dentro do disco opaco (que vai até 0.1075) -->
-        <sensor name="sensor_sun_tube" type="camera">
-          <pose>0 0 0.108 0 -1.5708 -1.5708</pose>
-          <always_on>true</always_on>
-          <update_rate>10</update_rate>
-          <visualize>true</visualize>
-          <topic>plate/sun_sensor/image</topic>
-          <camera>
-            <horizontal_fov>0.35</horizontal_fov> <!-- FOV aprox 20 graus para ver o tubo -->
-            <image>
-              <width>64</width>
-              <height>64</height>
-              <format>R8G8B8</format>
-            </image>
-            <clip>
-              <near>0.001</near>
-              <far>5.0</far>
-            </clip>
-          </camera>
-        </sensor>
 
-        <!-- PAREDES DO TUBO (Preto Fosco - Cilindro Oco aproximado por 8 segmentos) -->
-        <!-- Altura Z total 5cm -->
-        <!-- Base do tubo no topo do disco (0.1075). Centro Z = 0.1075 + 0.025 = 0.1325 -->
-        <!-- Raio interno ~0.5cm (Diametro 1cm) -->
-        
-        <!-- Segmento 1 (0 graus) -->
-        <visual name="visual_tube_segment_1">
-          <pose>0.005 0 0.1325 0 0 0</pose>
-          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
-          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
-        <!-- Segmento 2 (45 graus) -->
-        <visual name="visual_tube_segment_2">
-          <pose>0.00354 0.00354 0.1325 0 0 0.7854</pose>
-          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
-          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
-        <!-- Segmento 3 (90 graus) -->
-        <visual name="visual_tube_segment_3">
-          <pose>0 0.005 0.1325 0 0 1.5708</pose>
-          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
-          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
-        <!-- Segmento 4 (135 graus) -->
-        <visual name="visual_tube_segment_4">
-          <pose>-0.00354 0.00354 0.1325 0 0 2.3562</pose>
-          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
-          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
-        <!-- Segmento 5 (180 graus) -->
-        <visual name="visual_tube_segment_5">
-          <pose>-0.005 0 0.1325 0 0 3.1416</pose>
-          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
-          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
-        <!-- Segmento 6 (225 graus) -->
-        <visual name="visual_tube_segment_6">
-          <pose>-0.00354 -0.00354 0.1325 0 0 3.9270</pose>
-          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
-          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
-        <!-- Segmento 7 (270 graus) -->
-        <visual name="visual_tube_segment_7">
-          <pose>0 -0.005 0.1325 0 0 4.7124</pose>
-          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
-          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
-        <!-- Segmento 8 (315 graus) -->
-        <visual name="visual_tube_segment_8">
-          <pose>0.00354 -0.00354 0.1325 0 0 5.4978</pose>
-          <geometry> <box><size>0.001 0.0042 0.05</size></box> </geometry>
-          <material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 1</specular></material>
-        </visual>
       </link>
 
       <!-- JOINTS EXISTENTES -->
