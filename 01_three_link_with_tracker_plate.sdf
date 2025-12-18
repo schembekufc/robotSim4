@@ -153,20 +153,20 @@
         <collision name="collision_arm">
           <pose>-0.07 -0.1725 2.0384 0 0 0</pose>
           <geometry>
-            <box><size>0.5 0.3 0.8</size></box>
+            <box><size>0.5 0.3 0.4</size></box> 
           </geometry>
         </collision>
         <visual name="visual_arm_structure">
-          <pose>-0.07 -0.1725 2.0384 0 0 0</pose>
+          <pose>0 0 0 0 0 0</pose>
           <geometry>
             <mesh>
-              <uri>file://models/catia/3_BracoH.dae</uri>
-              <scale>1 1 1</scale>
+              <uri>file://formas/braco.stl</uri>
+              <scale>0.001 0.001 0.001</scale>
             </mesh>
           </geometry>
           <material>
-            <ambient>0.5 0.5 0.5 1</ambient>
-            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <ambient>0.5 0 0.5 1</ambient>
+            <diffuse>0.5 0 0.5 1</diffuse>
           </material>
         </visual>
 
@@ -203,149 +203,25 @@
 
       </link>
 
-      <!-- ========================================== -->
-      <!-- LINK DO PRATO PARABÓLICO (Espelho)         -->
-      <!-- ========================================== -->
-      <link name="link_dish">
-        <!-- Pose inicial do link (será ajustada pela joint) -->
-        <!-- Pose ajustada para tangência calculada: Z_arm_top (2.042) + Z_dish_bottom_offset (0.01) = 2.052 -->
-        <pose>-0.07 2.143 2.052 0 0 0</pose>
-        
-        <!-- Propriedades físicas: Resina e Fibra de Vidro -->
-        <!-- Densidade: 1900 kg/m³ -->
-        <!-- Massa calculada: 145.50 kg -->
-        <inertial>
-          <mass>145.50</mass>
-          <inertia>
-            <ixx>83.0250</ixx>
-            <iyy>83.0250</iyy>
-            <izz>163.6819</izz>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyz>0</iyz>
-          </inertia>
-        </inertial>
-        
-        <!-- Visual do prato -->
-        <visual name="visual_dish_reflector">
-          <pose>0 0 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>file://formas/parabolic_dish.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <ambient>0.9 0.9 0.95 1</ambient>
-            <diffuse>0.9 0.9 0.95 1</diffuse>
-            <specular>1.0 1.0 1.0 1</specular>
-            <emissive>0 0 0 1</emissive>
-            <pbr>
-              <metal>
-                <metalness>0.95</metalness>
-                <roughness>0.05</roughness>
-              </metal>
-            </pbr>
-          </material>
-        </visual>
-        
-        <!-- Colisão do prato -->
-        <collision name="collision_dish">
-          <pose>0 0 0 0 0 0</pose>
-          <geometry>
-            <mesh>
-              <uri>file://formas/parabolic_dish.stl</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-        </collision>
+      <!-- LINK DO PRATO PARABÓLICO (com colisão simplificada) -->
+      <!-- LINK DO PRATO REMOVIDO PARA TESTE -->
+      <!-- DISH LINK PART 1 REMOVED -->
+      
 
-        <!-- VISUAL: Haste de suporte do sensor (Feed Support) -->
-        <visual name="visual_feed_support">
-          <pose>0 0 0.9 0 0 0</pose> <!-- Centro da haste em Z=0.9 (metade de 1.8) -->
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius>
-              <length>1.8</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <ambient>0.2 0.2 0.2 1</ambient>
-            <diffuse>0.2 0.2 0.2 1</diffuse>
-          </material>
-        </visual>
 
-        <!-- VISUAL: Caixa do Sensor (Sensor Housing) -->
-        <visual name="visual_sensor_housing">
-          <pose>0 0 1.8 0 0 0</pose> <!-- No foco -->
-          <geometry>
-            <cylinder>
-              <radius>0.1</radius>
-              <length>0.1</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <ambient>0.1 0.1 0.1 1</ambient>
-            <diffuse>0.1 0.1 0.1 1</diffuse>
-          </material>
-        </visual>
 
-        <!-- FILTRO ESCURO (Lente de óculos de sol) -->
-        <visual name="visual_filter_dark">
-          <pose>0 0 1.75 0 0 0</pose> <!-- 5cm abaixo da câmera -->
-          <cast_shadows>false</cast_shadows>
-          <geometry>
-            <mesh>
-              <uri>file://lens_mask.obj</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <ambient>0 0 0 1</ambient>
-            <diffuse>0 0 0 1</diffuse>
-            <specular>0 0 0 1</specular>
-          </material>
-        </visual>
 
-        <!-- LENTE CENTRAL (Vidro ajustável) -->
-        <visual name="visual_lens_center">
-          <pose>0 0 1.75 0 0 0</pose>
-          <cast_shadows>false</cast_shadows>
-          <geometry>
-            <cylinder>
-              <radius>0.02</radius> <!-- Raio de 2cm (Diâmetro 4cm) -->
-              <length>0.002</length>
-            </cylinder>
-          </geometry>
-          <material>
-            <ambient>0 0 0 0.95</ambient> <!-- Ajuste o último valor (Alpha) para transparência -->
-            <diffuse>0 0 0 0.95</diffuse>
-            <specular>0.1 0.1 0.1 0.95</specular>
-          </material>
-        </visual>
 
-        <!-- SENSOR DE LUMINOSIDADE (CÂMERA NO FOCO) -->
-        <!-- Foco = 1.8m. Câmera olhando para baixo (pitch 90 graus) -->
-        <sensor name="sensor_focus_camera" type="camera">
-          <pose>0 0 1.8 0 1.5708 0</pose>
-          <always_on>true</always_on>
-          <update_rate>10</update_rate>
-          <visualize>true</visualize>
-          <topic>parabolic_dish/focus_cam/image</topic>
-          <camera>
-            <horizontal_fov>1.5</horizontal_fov> <!-- Cobre o prato de 3m a 1.8m de distância -->
-            <image>
-              <width>64</width>
-              <height>64</height>
-              <format>R8G8B8</format>
-            </image>
-            <clip>
-              <near>0.005</near>
-              <far>5.0</far>
-            </clip>
-          </camera>
-        </sensor>
-      </link>
+
+
+
+
+
+      <!-- DISH LINK PART 2 REMOVED -->
+
+
+
+
 
       <!-- NOVO LINK CILÍNDRICO (Pedido pelo usuário) -->
       <link name="link_cylinder">
@@ -451,12 +327,9 @@
         
         <!-- Parede X+ (Super Reforçada: 15cm) -->
         <collision name="col_ring_xp">
-          <pose>-0.025 0.8275 0 0 0 0</pose> <!-- Centro mantido, cresce para fora? Não, centro precisa ajustar se size cresce -->
-          <!-- Se furo termina em -0.05, e parede tem 15cm, centro da parede = -0.05 + 0.075 = +0.025 -->
-          <!-- Centro Furo: -0.07. Raio Furo 2cm. Borda Furo em -0.05. -->
-          <!-- Parede X+ começa em -0.05 e vai até +0.10. Centro = 0.025 -->
+          <!-- Parede X+ (Centro 0.025 -> Folga Zero) -->
           <pose>0.025 0.8275 0 0 0 0</pose> 
-          <geometry><box><size>0.15 0.14 0.3</size></box></geometry>
+          <geometry><box><size>0.15 0.14 0.01</size></box></geometry>
           <surface>
             <contact>
               <ode>
@@ -478,7 +351,7 @@
         <!-- Borda Furo em -0.09. Parede vai de -0.24 até -0.09. Centro = -0.165 -->
         <collision name="col_ring_xm">
           <pose>-0.165 0.8275 0 0 0 0</pose>
-          <geometry><box><size>0.15 0.14 0.3</size></box></geometry>
+          <geometry><box><size>0.15 0.14 0.01</size></box></geometry>
           <surface><contact><ode><kp>1e14</kp><kd>100.0</kd><max_vel>0.01</max_vel><min_depth>0.01</min_depth></ode></contact></surface>
         </collision>
         <visual name="vis_ring_xm">
@@ -490,7 +363,7 @@
         <!-- Parede Y+ (Reforçada 5cm mantida mas ajustada para cobrir X) -->
         <collision name="col_ring_yp">
           <pose>-0.07 0.8725 0 0 0 0</pose>
-          <geometry><box><size>0.04 0.05 0.3</size></box></geometry>
+          <geometry><box><size>0.04 0.05 0.01</size></box></geometry>
           <surface><contact><ode><kp>1e14</kp><kd>100.0</kd><min_depth>0.01</min_depth></ode></contact></surface>
         </collision>
         <visual name="vis_ring_yp">
@@ -502,7 +375,7 @@
         <!-- Parede Y- -->
         <collision name="col_ring_ym">
           <pose>-0.07 0.7825 0 0 0 0</pose>
-          <geometry><box><size>0.04 0.05 0.3</size></box></geometry>
+          <geometry><box><size>0.04 0.05 0.01</size></box></geometry>
           <surface><contact><ode><kp>1e14</kp><kd>100.0</kd><min_depth>0.01</min_depth></ode></contact></surface>
         </collision>
         <visual name="vis_ring_ym">
@@ -887,14 +760,194 @@
         <pose>0 0 2.5 0 0 0</pose>
       </joint>
 
-      <!-- NOVA JOINT FIXA: link3 -> link_parabolic_dish -->
+
+      <!-- JOINT FIXA: link3 -> link_parabolic_dish -->
+      <!-- Joint Prato Removida -->
+      <!--
       <joint name="joint_dish_fixed" type="fixed">
         <parent>link_arm</parent>
         <child>link_dish</child>
-        <!-- A pose da joint é relativa ao frame do filho (link_dish).
-             Como já posicionamos o link corretamente no modelo, a pose da joint pode ser zero. -->
         <pose>0 0 0 0 0 0</pose>
       </joint>
+      -->
+
+
+
+
+      <!-- LINK DO PRATO PARABÓLICO (Restaurado SEM COLISÃO) -->
+      <link name="link_dish">
+        <!-- Pose ajustada: Z_arm_top (2.042) + Z_dish_bottom_offset (0.01) = 2.052 -->
+        <pose>-0.07 2.143 2.052 0 0 0</pose>
+        
+        <self_collide>false</self_collide>
+        
+        <inertial>
+          <mass>145.50</mass>
+          <inertia>
+            <ixx>83.0250</ixx><iyy>83.0250</iyy><izz>163.6819</izz>
+            <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+          </inertia>
+        </inertial>
+        
+        <!-- Visual do prato -->
+        <visual name="visual_dish_reflector">
+          <pose>0 0 0 0 0 0</pose>
+          <cast_shadows>true</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://formas/parabolic_dish.stl</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.95 1</ambient>
+            <diffuse>0.9 0.9 0.95 1</diffuse>
+            <specular>1.0 1.0 1.0 1</specular>
+            <emissive>0 0 0 1</emissive>
+            <pbr>
+              <metal>
+                <metalness>0.95</metalness>
+                <roughness>0.05</roughness>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+
+        <!-- VISUAL: Haste de suporte do sensor -->
+        <visual name="visual_feed_support">
+          <pose>0 0 0.9 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>1.8</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.2 0.2 0.2 1</ambient>
+            <diffuse>0.2 0.2 0.2 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- VISUAL: Caixa do Sensor -->
+        <visual name="visual_sensor_housing">
+          <pose>0 0 1.8 0 0 0</pose>
+          <geometry>
+            <cylinder>
+              <radius>0.1</radius>
+              <length>0.1</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1</ambient>
+            <diffuse>0.1 0.1 0.1 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- VISUAL: Filtro Escuro -->
+        <visual name="visual_filter_dark">
+          <pose>0 0 1.75 0 0 0</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <mesh>
+              <uri>file://lens_mask.obj</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0 0 0 1</ambient>
+            <diffuse>0 0 0 1</diffuse>
+            <specular>0 0 0 1</specular>
+          </material>
+        </visual>
+
+        <!-- VISUAL: Lente Central -->
+        <visual name="visual_lens_center">
+          <pose>0 0 1.75 0 0 0</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <cylinder>
+              <radius>0.02</radius>
+              <length>0.002</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0 0 0 0.95</ambient>
+            <diffuse>0 0 0 0.95</diffuse>
+            <specular>0.1 0.1 0.1 0.95</specular>
+          </material>
+        </visual>
+
+        <!-- SENSOR DE LUMINOSIDADE -->
+        <sensor name="sensor_focus_camera" type="camera">
+          <pose>0 0 1.8 0 1.5708 0</pose>
+          <always_on>true</always_on>
+          <update_rate>10</update_rate>
+          <visualize>true</visualize>
+          <topic>parabolic_dish/focus_cam/image</topic>
+          <camera>
+            <horizontal_fov>1.5</horizontal_fov>
+            <image>
+              <width>64</width>
+              <height>64</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip>
+              <near>0.005</near>
+              <far>5.0</far>
+            </clip>
+          </camera>
+        </sensor>
+      </link>
+
+      <joint name="joint_dish_fixed" type="fixed">
+        <parent>link_arm</parent>
+        <child>link_dish</child>
+        <pose>0 0 0 0 0 0</pose>
+      </joint>
+      <!-- LINK COSTELAS (Estrutura de suporte)       -->
+      <!-- ========================================== -->
+      <!-- Link Costelas Removido -->
+      <!-- LINK COSTELAS (Restaurado) -->
+      <link name="link_ribs">
+        <!-- Pose ajustada: Z=2.045 (Tangência aproximada) + Rotação Z=30° (0.5236 rad) -->
+        <pose>-0.07 2.143 2.043 0 0 0.5236</pose>
+        <self_collide>false</self_collide>
+        <inertial>
+          <mass>18.0792</mass>
+          <inertia>
+            <ixx>8.474625</ixx><iyy>8.474625</iyy><izz>16.949250</izz>
+            <ixy>0.0</ixy><ixz>0.0</ixz><iyz>0.0</iyz>
+          </inertia>
+        </inertial>
+        <visual name="visual_ribs">
+          <geometry>
+            <mesh>
+              <uri>file://formas/costelas2.stl</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.6 0.6 0.7 1</ambient>
+            <diffuse>0.6 0.6 0.7 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+          </material>
+        </visual>
+      </link>
+
+      <joint name="joint_ribs_fixed" type="fixed">
+        <parent>link_arm</parent>
+        <child>link_ribs</child>
+        <pose>0 0 0 0 0 0</pose>
+      </joint>
+
+      <!-- Joint Costelas Removida -->
+      <!--
+      <joint name="joint_ribs_fixed" type="fixed">
+        <parent>link_arm</parent>
+        <child>link_ribs</child>
+        <pose>0 0 0 0 0 0</pose>
+      </joint>
+      -->
 
       <!-- PLUGINS DE JOINT STATE E CONTROLADORES -->
       <plugin filename="gz-sim-joint-state-publisher-system"
