@@ -19,8 +19,8 @@
     </light>
 
     <scene>
-      <ambient>0.5 0.5 0.5 1</ambient>
-      <background>0.7 0.7 0.7 1</background>
+      <ambient>0.6 0.6 0.7 1</ambient> <!-- Luz ambiente mais clara -->
+      <background>0.8 0.8 0.95 1</background> <!-- Fundo céu azul claro -->
       <shadows>true</shadows>
     </scene>
 
@@ -59,8 +59,8 @@
             </plane>
           </geometry>
           <material>
-            <ambient>0.4 0.4 0.4 1</ambient>
-            <diffuse>0.4 0.4 0.4 1</diffuse>
+            <ambient>0.76 0.7 0.5 1</ambient> <!-- Areia do deserto (Ambient) -->
+            <diffuse>0.76 0.7 0.5 1</diffuse> <!-- Areia do deserto (Diffuse) -->
           </material>
         </visual>
       </link>
@@ -103,8 +103,8 @@
             </mesh>
           </geometry>
           <material>
-            <ambient>0.5 0.5 0.5 1</ambient>
-            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <ambient>0.2 0.2 0.2 1</ambient> <!-- Cinza Bem Escuro -->
+            <diffuse>0.2 0.2 0.2 1</diffuse>
           </material>
         </visual>
       </link>
@@ -134,8 +134,8 @@
             </mesh>
           </geometry>
           <material>
-            <ambient>0.5 0.5 0.5 1</ambient>
-            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <ambient>0 0 1 1</ambient>
+            <diffuse>0 0 1 1</diffuse>
           </material>
         </visual>
       </link>
@@ -313,7 +313,7 @@
           <!-- Centro em Y=0.39 (Length=0.78) -->
           <pose>0 0.39 0 1.5708 0 0</pose> 
           <geometry><cylinder><radius>0.02</radius><length>0.78</length></cylinder></geometry>
-          <material><ambient>0.5 0 0.5 1</ambient><diffuse>0.5 0 0.5 1</diffuse></material> 
+          <material><ambient>0.8 0.8 0.2 1</ambient><diffuse>0.8 0.8 0.2 1</diffuse></material> 
         </visual>
         <!-- Sem colisão na barra principal para evitar bugs -->
 
@@ -408,9 +408,9 @@
             </cylinder>
           </geometry>
           <material>
-            <ambient>0.5 0 0.5 1</ambient>
-            <diffuse>0.5 0 0.5 1</diffuse>
-          </material> 
+            <ambient>0.8 0.8 0.2 1</ambient>
+            <diffuse>0.8 0.8 0.2 1</diffuse>
+          </material>  
         </visual>
         <!-- COLISÃO DA BARRA VERTICAL (Para interagir com o anel) -->
         <collision name="col_orange_bar_z">
@@ -804,10 +804,11 @@
             <diffuse>0.9 0.9 0.95 1</diffuse>
             <specular>1.0 1.0 1.0 1</specular>
             <emissive>0 0 0 1</emissive>
+            <!-- Material Espelhado: Metalness reduzido de 0.95 para 0.6 para evitar que fique preto em ambiente sem reflexo (skybox simples) -->
             <pbr>
               <metal>
-                <metalness>0.95</metalness>
-                <roughness>0.05</roughness>
+                <metalness>0.6</metalness>
+                <roughness>0.1</roughness>
               </metal>
             </pbr>
           </material>
@@ -927,8 +928,8 @@
             </mesh>
           </geometry>
           <material>
-            <ambient>0.6 0.6 0.7 1</ambient>
-            <diffuse>0.6 0.6 0.7 1</diffuse>
+            <ambient>0.85 0.85 0.85 1</ambient>
+            <diffuse>0.85 0.85 0.85 1</diffuse>
             <specular>0.5 0.5 0.5 1</specular>
           </material>
         </visual>
@@ -990,6 +991,8 @@
               name="gz::sim::systems::ApplyJointForce">
         <joint_name>joint_cylinder_green</joint_name>
       </plugin>
+
+
 
 
     </model>
