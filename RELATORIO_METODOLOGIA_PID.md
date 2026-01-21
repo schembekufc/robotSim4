@@ -35,6 +35,17 @@ O processo iterativo de busca pelo Ganho Crítico ($K_u$) seguiu os seguintes pa
     - O intervalo de interesse para o $K_u$ foi identificado entre 25 e 50.
 3.  **Critério de Parada:** Busca-se o valor de $P$ que sustenta uma oscilação de amplitude constante (limitada marginalmente pelo amortecimento natural da simulação).
 
+### 2.4. Resultados Preliminares e Discussão de Viabilidade (20/01)
+Durante os testes na junta de **Elevação**, ganhos proporcionais elevados foram testados (até $K_p = 50.000$).
+- **Observação:** Mesmo com $K_p = 50.000$, a resposta manteve-se subamortecida (oscilação decrescente), indicando que o amortecimento viscoso natural da simulação (damping das juntas + física) dissipa energia eficientemente.
+- **Análise de Torque Realista:**
+    - Um ganho $P = 50.000$ gera um torque de $5.000 \text{ Nm}$ para um erro de apenas $0.1 \text{ rad}$ ($5.7^\circ$).
+    - Motores robóticos industriais típicos possuem torques de pico na faixa de $500 - 1000 \text{ Nm}$.
+    - **Conclusão:** Embora a simulação suporte ganhos altíssimos, para fins de projeto de engenharia, o ganho final será limitado não pela instabilidade numérica, mas pela saturação de torque realista.
+- **Plano de Continuação:**
+    1. Testar até o limite teórico do SDF ($200.000$) apenas para registro acadêmico do limite de estabilidade.
+    2. Selecionar um "P Operacional" que mantenha os torques dentro de uma faixa viável (ex: máx $1.000 \text{ Nm}$) e realizar a sintonia dos termos $I$ e $D$ com base neste valor de projeto.
+
 ## 3. Embasamento Teórico Verificado
 Durante a análise dos valores originais do SDF, verificou-se a consistência com a fórmula de sintonia para PIDs completos:
 $$ K_i \cdot K_d = \frac{K_p^2}{4} $$
