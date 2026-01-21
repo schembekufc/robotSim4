@@ -15,8 +15,8 @@ blender
 
 ### **2. Importar o Arquivo**
 - File → Import → Collada (.dae)
-- Navegar até: `/home/lhmt-jhoni/Gazebo/robotSim4/models/catia/2_Torre_original.dae`
-- Clicar em "Import COLLADA"
+- Navegar até: `2_Torre_original.dae`
+- Clicar em "Import /home/lhmt-jhoni/Gazebo/robotSim4/models/catia/COLLADA"
 - **Aguardar** (pode demorar 30-60 segundos)
 
 ### **3. Selecionar o Objeto**

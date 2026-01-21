@@ -186,17 +186,24 @@ class UnifiedControlGUI(QWidget):
         self.enviar_light_config()
 
     def init_ui(self):
-        layout = QVBoxLayout()
+        # Layout Principal Vertical (Conteúdo + Botão Sair)
+        main_root_layout = QVBoxLayout()
         
-        # Tabs
-        tabs = QTabWidget()
+        # Layout de Conteúdo Horizontal (Duas Colunas)
+        # Coluna Esquerda: Sensor de Foco + Controle do Sol
+        # Coluna Direita: Rastreamento
+        content_layout = QHBoxLayout()
         
-        # ===== TAB 1: SENSOR DE FOCO =====
-        tab_sensor = QWidget()
+        # ===== COLUNA ESQUERDA =====
+        left_column = QVBoxLayout()
+        
+        # --- BLOCO 1: SENSOR DE FOCO ---
+        self.group_sensor_main = QGroupBox("1. Sensor de Foco")
+        self.group_sensor_main.setStyleSheet("QGroupBox { font-weight: bold; border: 1px solid gray; border-radius: 5px; margin-top: 1ex; } QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top center; padding: 0 3px; }")
         layout_sensor = QVBoxLayout()
         
         # Grupo Sensor (Câmera)
-        group_cam = QGroupBox("Sensor de Luminosidade (Câmera)")
+        group_cam = QGroupBox("Luminosidade (Câmera)")
         layout_cam = QVBoxLayout()
         
         self.lbl_sensor = QLabel("Intensidade Média: 0.00")
@@ -254,112 +261,15 @@ class UnifiedControlGUI(QWidget):
         self.lbl_info.setAlignment(Qt.AlignCenter)
         layout_sensor.addWidget(self.lbl_info)
         
-        tab_sensor.setLayout(layout_sensor)
-        tabs.addTab(tab_sensor, "Sensor de Foco")
+        self.group_sensor_main.setLayout(layout_sensor)
+        left_column.addWidget(self.group_sensor_main)
         
-        # ===== TAB 2: RASTREAMENTO =====
-        tab_tracker = QWidget()
-        layout_tracker = QVBoxLayout()
-        
-        # Luminâncias
-        group_lum = QGroupBox("Luminância média (0–255)")
-        grid_lum = QGridLayout()
-        
-        self.lbl_q1 = QLabel("Q1 (vermelho): ---")
-        self.lbl_q2 = QLabel("Q2 (verde escuro): ---")
-        self.lbl_q3 = QLabel("Q3 (azul): ---")
-        self.lbl_q4 = QLabel("Q4 (amarelo escuro): ---")
-        
-        grid_lum.addWidget(self.lbl_q1, 0, 0)
-        grid_lum.addWidget(self.lbl_q2, 0, 1)
-        grid_lum.addWidget(self.lbl_q3, 1, 0)
-        grid_lum.addWidget(self.lbl_q4, 1, 1)
-        
-        group_lum.setLayout(grid_lum)
-        layout_tracker.addWidget(group_lum)
-        
-        # Diferenças
-        group_diff = QGroupBox("Diferenças e passos")
-        grid_diff = QGridLayout()
-        
-        self.lbl_d12 = QLabel("Δ12 = Q1 - Q2: ---")
-        self.lbl_d14 = QLabel("Δ14 = Q1 - Q4: ---")
-        self.lbl_d32 = QLabel("Δ32 = Q3 - Q2: ---")
-        self.lbl_d34 = QLabel("Δ34 = Q3 - Q4: ---")
-        self.lbl_step1 = QLabel("step joint1: ---")
-        self.lbl_step2 = QLabel("step joint2: ---")
-        self.lbl_comp = QLabel("Comparação (Q1+Q4) vs (Q2+Q3): ---")
-        
-        grid_diff.addWidget(self.lbl_d12, 0, 0)
-        grid_diff.addWidget(self.lbl_d14, 0, 1)
-        grid_diff.addWidget(self.lbl_d32, 1, 0)
-        grid_diff.addWidget(self.lbl_d34, 1, 1)
-        grid_diff.addWidget(self.lbl_comp, 2, 0, 1, 2)
-        grid_diff.addWidget(self.lbl_step1, 3, 0)
-        grid_diff.addWidget(self.lbl_step2, 3, 1)
-        
-        group_diff.setLayout(grid_diff)
-        layout_tracker.addWidget(group_diff)
-        
-        # Status
-        self.lbl_status = QLabel("Status: PARADO - Clique em 'Iniciar Rastreamento'")
-        self.lbl_status.setStyleSheet("color: red; font-weight: bold;")
-        layout_tracker.addWidget(self.lbl_status)
-        
-        # Debug log
-        group_debug = QGroupBox("Debug Log")
-        self.txt_debug = QTextEdit()
-        self.txt_debug.setReadOnly(True)
-        self.txt_debug.setMaximumHeight(100)
-        group_debug.setLayout(QVBoxLayout())
-        group_debug.layout().addWidget(self.txt_debug)
-        layout_tracker.addWidget(group_debug)
-        
-        # Comandos de junta
-        group_cmd = QGroupBox("Comandos de juntas")
-        grid_cmd = QGridLayout()
-        
-        self.lbl_j1 = QLabel("joint1 offset (rad): ---")
-        self.lbl_j2 = QLabel("joint2 offset (rad): ---")
-        self.lbl_j1_real = QLabel("joint1 comando (rad): ---")
-        self.lbl_j2_real = QLabel("joint2 comando (rad): ---")
-        self.lbl_j1_init = QLabel("joint1 inicial (rad): ---")
-        self.lbl_j2_init = QLabel("joint2 inicial (rad): ---")
-        
-        grid_cmd.addWidget(self.lbl_j1_init, 0, 0)
-        grid_cmd.addWidget(self.lbl_j2_init, 0, 1)
-        grid_cmd.addWidget(self.lbl_j1, 1, 0)
-        grid_cmd.addWidget(self.lbl_j2, 1, 1)
-        grid_cmd.addWidget(self.lbl_j1_real, 2, 0)
-        grid_cmd.addWidget(self.lbl_j2_real, 2, 1)
-        
-        group_cmd.setLayout(grid_cmd)
-        layout_tracker.addWidget(group_cmd)
-        
-        # Botões
-        btn_layout = QHBoxLayout()
-        
-        self.btn_iniciar = QPushButton("Iniciar Rastreamento")
-        self.btn_iniciar.clicked.connect(self.iniciar_rastreamento)
-        self.btn_iniciar.setStyleSheet("background-color: green; color: white; font-weight: bold;")
-        
-        self.btn_parar = QPushButton("Parar Rastreamento")
-        self.btn_parar.clicked.connect(self.parar_rastreamento)
-        self.btn_parar.setStyleSheet("background-color: orange; color: white; font-weight: bold;")
-        self.btn_parar.setEnabled(False)
-        
-        btn_layout.addWidget(self.btn_iniciar)
-        btn_layout.addWidget(self.btn_parar)
-        layout_tracker.addLayout(btn_layout)
-        
-        tab_tracker.setLayout(layout_tracker)
-        tabs.addTab(tab_tracker, "Rastreamento")
-        
-        # ===== TAB 3: CONTROLE DO SOL =====
-        tab_sun = QWidget()
+        # --- BLOCO 2: CONTROLE DO SOL ---
+        self.group_sun_main = QGroupBox("3. Controle do Sol")
+        self.group_sun_main.setStyleSheet("QGroupBox { font-weight: bold; border: 1px solid gray; border-radius: 5px; margin-top: 1ex; } QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top center; padding: 0 3px; }")
         layout_sun = QVBoxLayout()
         
-        group_sun = QGroupBox("Parâmetros do Sol")
+        # group_sun interno removido para simplificar, já estamos num GroupBox
         grid_sun = QGridLayout()
         
         # Azimute
@@ -419,24 +329,140 @@ class UnifiedControlGUI(QWidget):
         grid_sun.addWidget(self.slider_int, 2, 1)
         grid_sun.addWidget(self.spin_int, 2, 2)
         
-        group_sun.setLayout(grid_sun)
-        layout_sun.addWidget(group_sun)
+        layout_sun.addLayout(grid_sun)
         
-        self.lbl_topic = QLabel(f"Tópico luz: {self.topic_light}  |  nome: {LIGHT_NAME}")
+        self.lbl_topic = QLabel(f"Tópico: {self.topic_light}")
         layout_sun.addWidget(self.lbl_topic)
         
-        tab_sun.setLayout(layout_sun)
-        tabs.addTab(tab_sun, "Controle do Sol")
+        self.group_sun_main.setLayout(layout_sun)
+        left_column.addWidget(self.group_sun_main)
         
-        # ===== LAYOUT PRINCIPAL =====
-        layout.addWidget(tabs)
+        # Adiciona coluna da esquerda
+        content_layout.addLayout(left_column, 1)
         
-        btn_quit = QPushButton("Sair")
+        # ===== COLUNA DIREITA =====
+        right_column = QVBoxLayout()
+        
+        # --- BLOCO 3: RASTREAMENTO ---
+        self.group_tracker_main = QGroupBox("2. Rastreamento")
+        self.group_tracker_main.setStyleSheet("QGroupBox { font-weight: bold; border: 1px solid gray; border-radius: 5px; margin-top: 1ex; } QGroupBox::title { subcontrol-origin: margin; subcontrol-position: top center; padding: 0 3px; }")
+        layout_tracker = QVBoxLayout()
+        
+        # Luminâncias
+        group_lum = QGroupBox("Luminância média (0–255)")
+        grid_lum = QGridLayout()
+        
+        self.lbl_q1 = QLabel("Q1 (vermelho): ---")
+        self.lbl_q2 = QLabel("Q2 (verde escuro): ---")
+        self.lbl_q3 = QLabel("Q3 (azul): ---")
+        self.lbl_q4 = QLabel("Q4 (amarelo escuro): ---")
+        
+        grid_lum.addWidget(self.lbl_q1, 0, 0)
+        grid_lum.addWidget(self.lbl_q2, 0, 1)
+        grid_lum.addWidget(self.lbl_q3, 1, 0)
+        grid_lum.addWidget(self.lbl_q4, 1, 1)
+        
+        group_lum.setLayout(grid_lum)
+        layout_tracker.addWidget(group_lum)
+        
+        # Diferenças
+        group_diff = QGroupBox("Diferenças e passos")
+        grid_diff = QGridLayout()
+        
+        self.lbl_d12 = QLabel("Δ12 = Q1 - Q2: ---")
+        self.lbl_d14 = QLabel("Δ14 = Q1 - Q4: ---")
+        self.lbl_d32 = QLabel("Δ32 = Q3 - Q2: ---")
+        self.lbl_d34 = QLabel("Δ34 = Q3 - Q4: ---")
+        self.lbl_step1 = QLabel("step joint1: ---")
+        self.lbl_step2 = QLabel("step joint2: ---")
+        self.lbl_comp = QLabel("Comparação (Q1+Q4) vs (Q2+Q3): ---")
+        
+        grid_diff.addWidget(self.lbl_d12, 0, 0)
+        grid_diff.addWidget(self.lbl_d14, 0, 1)
+        grid_diff.addWidget(self.lbl_d32, 1, 0)
+        grid_diff.addWidget(self.lbl_d34, 1, 1)
+        grid_diff.addWidget(self.lbl_comp, 2, 0, 1, 2)
+        grid_diff.addWidget(self.lbl_step1, 3, 0)
+        grid_diff.addWidget(self.lbl_step2, 3, 1)
+        
+        group_diff.setLayout(grid_diff)
+        layout_tracker.addWidget(group_diff)
+        
+        # Status
+        self.lbl_status = QLabel("Status: PARADO - Clique em 'Iniciar Rastreamento'")
+        self.lbl_status.setStyleSheet("color: red; font-weight: bold; font-size: 14px;")
+        layout_tracker.addWidget(self.lbl_status)
+        
+        # Debug log
+        group_debug = QGroupBox("Debug Log")
+        self.txt_debug = QTextEdit()
+        self.txt_debug.setReadOnly(True)
+        # self.txt_debug.setMaximumHeight(100) # Deixar expandir na coluna 
+        group_debug.setLayout(QVBoxLayout())
+        group_debug.layout().addWidget(self.txt_debug)
+        layout_tracker.addWidget(group_debug)
+        
+        # Comandos de junta
+        group_cmd = QGroupBox("Comandos de juntas")
+        grid_cmd = QGridLayout()
+        
+        self.lbl_j1 = QLabel("joint1 offset: ---")
+        self.lbl_j2 = QLabel("joint2 offset: ---")
+        self.lbl_j1_real = QLabel("joint1 cmd: ---")
+        self.lbl_j2_real = QLabel("joint2 cmd: ---")
+        self.lbl_j1_init = QLabel("joint1 init: ---")
+        self.lbl_j2_init = QLabel("joint2 init: ---")
+        
+        grid_cmd.addWidget(self.lbl_j1_init, 0, 0)
+        grid_cmd.addWidget(self.lbl_j2_init, 0, 1)
+        grid_cmd.addWidget(self.lbl_j1, 1, 0)
+        grid_cmd.addWidget(self.lbl_j2, 1, 1)
+        grid_cmd.addWidget(self.lbl_j1_real, 2, 0)
+        grid_cmd.addWidget(self.lbl_j2_real, 2, 1)
+        
+        group_cmd.setLayout(grid_cmd)
+        layout_tracker.addWidget(group_cmd)
+        
+        # Botões
+        btn_layout = QHBoxLayout()
+        
+        self.btn_iniciar = QPushButton("INICIAR RASTREAMENTO")
+        self.btn_iniciar.clicked.connect(self.iniciar_rastreamento)
+        self.btn_iniciar.setMinimumHeight(40)
+        self.btn_iniciar.setStyleSheet("background-color: green; color: white; font-weight: bold; border-radius: 5px;")
+        
+        self.btn_parar = QPushButton("PARAR")
+        self.btn_parar.clicked.connect(self.parar_rastreamento)
+        self.btn_parar.setMinimumHeight(40)
+        self.btn_parar.setStyleSheet("background-color: orange; color: white; font-weight: bold; border-radius: 5px;")
+        self.btn_parar.setEnabled(False)
+        
+        btn_layout.addWidget(self.btn_iniciar)
+        btn_layout.addWidget(self.btn_parar)
+        layout_tracker.addLayout(btn_layout)
+        
+        self.group_tracker_main.setLayout(layout_tracker)
+        right_column.addWidget(self.group_tracker_main)
+        
+        # Adiciona coluna da direita
+        content_layout.addLayout(right_column, 1)
+        
+        # Configurar proporção das colunas (40% Esquerda, 60% Direita)
+        content_layout.setStretch(0, 4)
+        content_layout.setStretch(1, 6)
+        
+        # Adiciona ao layout raiz
+        main_root_layout.addLayout(content_layout)
+        
+        # Botão Sair Geral
+        btn_quit = QPushButton("SAIR DA APLICAÇÃO")
         btn_quit.clicked.connect(self.close)
-        layout.addWidget(btn_quit)
+        btn_quit.setMinimumHeight(30)
+        btn_quit.setStyleSheet("background-color: #444; color: white; font-weight: bold;")
+        main_root_layout.addWidget(btn_quit)
         
-        self.setLayout(layout)
-        self.resize(700, 800)
+        self.setLayout(main_root_layout)
+        self.resize(1200, 850) # Janela ampliada
 
     # ===== CALLBACKS SENSOR DE FOCO =====
     def on_focus_image(self, msg: Image):

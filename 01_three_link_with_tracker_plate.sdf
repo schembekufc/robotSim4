@@ -655,7 +655,7 @@
 
 
 
-      <joint name="joint_azimuth" type="revolute">
+      <joint name="joint_azimuth" type="fixed">
         <parent>link_base</parent>
         <child>link_tower</child>
         <axis>
@@ -974,9 +974,9 @@
               name="gz::sim::systems::JointPositionController">
         <joint_name>joint_elevation</joint_name>
         <topic>/model/three_link_model/joint/joint_elevation/cmd_pos</topic>
-        <p_gain>4000</p_gain>
-        <i_gain>5000</i_gain>
-        <d_gain>4000</d_gain>
+        <p_gain>10000</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
         <i_min>-10000</i_min>
         <i_max>10000</i_max>
       </plugin>
