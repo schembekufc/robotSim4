@@ -42,9 +42,25 @@ Durante os testes na junta de **Elevação**, ganhos proporcionais elevados fora
     - Um ganho $P = 50.000$ gera um torque de $5.000 \text{ Nm}$ para um erro de apenas $0.1 \text{ rad}$ ($5.7^\circ$).
     - Motores robóticos industriais típicos possuem torques de pico na faixa de $500 - 1000 \text{ Nm}$.
     - **Conclusão:** Embora a simulação suporte ganhos altíssimos, para fins de projeto de engenharia, o ganho final será limitado não pela instabilidade numérica, mas pela saturação de torque realista.
-- **Plano de Continuação:**
-    1. Testar até o limite teórico do SDF ($200.000$) apenas para registro acadêmico do limite de estabilidade.
-    2. Selecionar um "P Operacional" que mantenha os torques dentro de uma faixa viável (ex: máx $1.000 \text{ Nm}$) e realizar a sintonia dos termos $I$ e $D$ com base neste valor de projeto.
+
+### 2.5. Testes em Cenário Idealizado (Sem Atrito)
+Para investigar se a dissipação de energia observada era proveniente dos parâmetros físicos definidos ou de artefatos numéricos, realizou-se uma rodada de testes removendo temporariamente o amortecimento e atrito da junta de elevação (`damping=0.0`, `friction=0.0` no SDF).
+- **Resultado:** O sistema comportou-se como um oscilador conservativo ideal. Ganhos baixos (ex: $P=10, 50, 100$) resultaram em oscilações de amplitude constante e sustentada, sem convergência ou divergência clara.
+- **Análise:** Este cenário confirmou que o modelo "sem atrito" é excessivamente idealizado para a aplicação direta do critério de estabilidade marginal de Ziegler-Nichols (onde busca-se um limiar de instabilidade), pois o sistema torna-se marginalmente estável para qualquer $K_p > 0$.
+- **Decisão:** Optou-se por restaurar os parâmetros realistas de amortecimento (`damping=0.1`) e atrito (`friction=0.2`) para prosseguir com a sintonia, buscando o $K_u$ no sistema físico real, onde a instabilidade deve superar a dissipação natural.
+
+### 2.6. Teste de Estresse Extremo e Conclusão de Estabilidade Numérica (21/01)
+Em uma última tentativa de encontrar o limite de divergência oscilatória, realizou-se um teste de estresse extremo:
+- **Condições:** Amortecimento e atrito zerados (`0.0`), limite de torque aumentado para $2 \times 10^6 \text{ Nm}$ (2 milhões de Nm).
+- **Parâmetros de Teste:** Testes com $K_p = 500.000$ e $K_p = 1.000.000$.
+- **Observação:** Surpreendentemente, mesmo nestas condições extremas, a amplitude da oscilação estabilizou-se e manteve-se constante (comportamento de ciclo limite), sem apresentar divergência exponencial.
+- **Conclusão Metodológica Final:** O motor de física (Bullet/Gazebo), através de seus métodos de integração numérica, introduz uma estabilidade intrínseca que impede a "explosão" do sistema simulado mesmo sob ganhos teoricamente infinitos.
+- **Definição de Projeto:** Diante da impossibilidade de identificar $K_u$ via instabilidade na simulação, o critério limitante para o ganho proporcional será definido pela **capacidade física do atuador** (motor + redutor) do projeto real, e não pelo limite de estabilidade de malha fechada. O ganho será escolhido de forma a não saturar o torque máximo especificado para o hardware.
+
+### 2.7. Plano de Continuação Atualizado
+1. Definir o torque máximo do motor real (ex: 500 Nm).
+2. Calcular o ganho $K_p$ máximo que respeita esse torque para um erro típico (ex: 5 graus).
+3. Utilizar este $K_p$ "físico" como base para calcular $T_i$ e $T_d$ pelos métodos analíticos ou ajuste fino por desempenho.
 
 ## 3. Embasamento Teórico Verificado
 Durante a análise dos valores originais do SDF, verificou-se a consistência com a fórmula de sintonia para PIDs completos:

@@ -691,11 +691,11 @@
             <lower>-1e16</lower>
             <upper>1e16</upper>
             <velocity>100</velocity>
-            <effort>200000</effort>
+            <effort>2000000</effort>
           </limit>
           <dynamics>
-            <damping>0.1</damping>
-            <friction>0.2</friction>
+            <damping>0.0</damping>
+            <friction>0.0</friction>
           </dynamics>
         </axis>
         <sensor name="joint2_force_torque" type="force_torque">
@@ -974,7 +974,7 @@
               name="gz::sim::systems::JointPositionController">
         <joint_name>joint_elevation</joint_name>
         <topic>/model/three_link_model/joint/joint_elevation/cmd_pos</topic>
-        <p_gain>10000</p_gain>
+        <p_gain>1000000</p_gain>
         <i_gain>0</i_gain>
         <d_gain>0</d_gain>
         <i_min>-10000</i_min>
