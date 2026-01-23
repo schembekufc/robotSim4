@@ -264,6 +264,7 @@
       <!-- NOVO LINK CILÍNDRICO VERDE (No eixo de giro do braço) -->
       <link name="link_cylinder_green">
         <!-- Pose deslocada +1m em Y relação à joint_elevation (-0.1725 + 1.0) -->
+        <!-- Pose deslocada +1m em Y relação à joint_elevation (-0.1725 + 1.0) -->
         <pose>-0.07 0.8275 2.0384 1.5708 0 0</pose>
         <inertial>
           <mass>2.0</mass>
